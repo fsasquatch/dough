@@ -1,0 +1,66 @@
+package dough.backend;
+
+interface SystemApi {
+    public function createWindow(width:Int, height:Int, title:String, flags:Int):Int;
+    public function destroyWindow(window:Int):Void;
+    public function isWindowRunning(window:Int):Bool;
+    public function getWindowWidth(window:Int):Int;
+    public function getWindowHeight(window:Int):Int;
+    public function setWindowSize(window:Int, w:Int, h:Int):Bool;
+    public function getWindowX(window:Int):Int;
+    public function getWindowY(window:Int):Int;
+    public function setWindowPosition(window:Int, w:Int, h:Int):Bool;
+    public function getCurrentDisplay(window:Int):Int;
+    public function setCurrentDisplay(window:Int, display:Int):Bool;
+    public function getPrimaryDisplay():Int;
+    public function isWindowFullscreen(window:Int):Bool;
+    public function toggleFullscreen(window:Int, borderless:Bool):Bool;
+    public function isWindowMinized(window:Int):Bool;
+    public function minimizeWindow(window:Int):Bool;
+    public function isWindowMaximized(window:Int):Bool;
+    public function maximizeWindow(window:Int):Bool;
+    public function raiseWindow(window:Int):Bool;
+    public function pollWindowEvents():Bool;
+    public function handleWindowEvents(window:Int):Void;
+
+    public function showCursor():Void;
+    public function hideCursor():Void;
+    public function enableCursor():Void;
+    public function disableCursor():Void;
+
+    public function setClipboardText(text:String):Void;
+    public function getClipboardText():String;
+
+    public function getFrameTime():Float;
+    public function getElapsedTime():Float;
+   
+    public function loadBytes(file:String):haxe.io.Bytes;
+    public function loadText(file:String):String;
+    public function saveBytes(file:haxe.io.Bytes):Void;
+    public function saveText(file:String):Void;
+
+    public function listFileEntries(location:String):Array<String>;
+    public function fileExists(file:String):Bool;
+
+    public function handleEvents():Void;
+    public function isKeyDown(key:Int):Bool;
+    public function isKeyJustDown(key:Int):Bool;
+    public function isKeyReleased(key:Int):Bool;
+
+    // TODO: Update to button enum
+    public function isGamepadAvailable(gamepad:Int):Bool;
+    public function getGamepadName(gamepad:Int):String;
+    public function isGamepadButtonDown(gamepad:Int, button:Int):Bool;
+    public function isGamepadButtonJustDown(gamepad:Int, button:Int):Bool;
+    public function isGamepadButtonReleased(gamepad:Int, button:Int):Bool;
+    public function getGamepadAxisCount(gamepad:Int):Int;
+    public function getGamepadAxisMovement(gamepad:Int, axis:Int):Float;
+    public function setGamepadVibration(gamepad:Int, leftMotor:Float, rightMotor:Float, durationSec:Float):Void;
+
+    public function getMousePositionX():Int;
+    public function getMousePositionY():Int;
+    public function setMousePosition(x:Int, y:Int):Void;
+    public function getMouseWheelMovement():Float;
+    // TODO: Update to mouse cursor type enum
+    public function setMouseCursor(cursor:Int):Void;
+}
