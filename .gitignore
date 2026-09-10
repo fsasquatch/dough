@@ -2,4 +2,5 @@ build
 .cache
 test/out.hl
 test/*.hdll
+test/content
 build.hxml
