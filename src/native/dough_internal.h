@@ -1,5 +1,5 @@
-#include "SDL3/SDL_gpu.h"
 #include "dough.h"
+#include "dough_utils.h"
 #include "SDL3/SDL.h"
 #include <stdbool.h>
 
@@ -39,12 +39,15 @@ typedef struct dh_internal_application {
     bool previous_key_state[512];
 
     SDL_Event event;
+    
     bool gpu_device_created;
     SDL_GPUDevice* gpu_device;
     SDL_GPUTexture* swapchain_tex;
-    SDL_GPUCommandBuffer* command_buf;
-
+    SDL_GPUCommandBuffer* command_buffer;
+    SDL_GPUCopyPass* copy_pass;
     SDL_GPURenderPass* render_passes[DH_MAX_RENDERPASS];
+    int active_render_pass;
+    dh_array current_vertex_attribs;
 } dh_internal_application;
 
 #endif

@@ -1,13 +1,4 @@
-#define HL_NAME(n) dough_##n
-
-#include <hl.h>
-#include "dough.h"
-
-// A note for future me
-// You can pass SDL_GPUShader* as _ABSTRACT(sdl_gpushader)
-// and on the haxe side typedef BackendShader = hl.Abstract<"sdl_gpushader">;
-
-// dough_window.c
+#include "ext_common.h"
 
 HL_PRIM int HL_NAME(create_window)(int width, int height, vstring* title, int flags) {
     return dh_create_window(width, height, hl_to_utf8(title->bytes), flags);
@@ -103,30 +94,3 @@ HL_PRIM void HL_NAME(handle_window_events)(int window_id) {
     dh_handle_window_events(window_id);
 }
 DEFINE_PRIM(_VOID, handle_window_events, _I32);
-
-// dough_gpu.c
-
-HL_PRIM void HL_NAME(begin_command_buffer)() {
-    dh_begin_command_buffer();
-}
-DEFINE_PRIM(_VOID, begin_command_buffer, _NO_ARG);
-
-HL_PRIM void HL_NAME(end_command_buffer)() {
-    dh_end_command_buffer();
-}
-DEFINE_PRIM(_VOID, end_command_buffer, _NO_ARG);
-
-HL_PRIM void HL_NAME(acquire_swapchain_texture)(int window_id) {
-    dh_acquire_swapchain_texture(window_id);
-}
-DEFINE_PRIM(_VOID, acquire_swapchain_texture, _I32);
-
-HL_PRIM void HL_NAME(begin_render_pass)(int render_pass_id) {
-    dh_begin_render_pass(render_pass_id);
-}
-DEFINE_PRIM(_VOID, begin_render_pass, _I32);
-
-HL_PRIM void HL_NAME(end_render_pass)(int render_pass_id) {
-    dh_end_render_pass(render_pass_id);
-}
-DEFINE_PRIM(_VOID, end_render_pass, _I32);

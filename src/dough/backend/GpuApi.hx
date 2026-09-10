@@ -5,8 +5,9 @@ import dough.graphics.*;
 interface GpuApi {
     public function beginRender():Void;
     public function endRender():Void;
-    public function beginRenderPass(id:Int, color:Color):Void;
-    public function endRenderPass(id:Int,):Void;
+    public function setClearColor(c:Color):Void;
+    public function beginRenderPass(window:Int, id:Int):Void;
+    public function endRenderPass(id:Int):Void;
     // TODO: Render targets
 
     // upload multiple resources (vertex buffers, textures) at once
@@ -22,7 +23,7 @@ interface GpuApi {
 
     public function loadTextureFromFile(file:String):BackendTexture;
     // TODO: Enum for all the texture formats
-    public function loadTextureFromBytes(bytes:haxe.io.Bytes, format:Int):BackendTexture;
+    public function loadTextureFromBytes(bytes:haxe.io.Bytes, width:Int, height:Int, format:Int):BackendTexture;
     public function unloadTexture(texture:BackendTexture):Void;
 
     // TODO: setup proper sampler configuration
@@ -41,8 +42,8 @@ interface GpuApi {
     public function setVertexBuffer(buffer:BackendBufferObject):Void;
     public function setIndexBuffer(buffer:BackendBufferObject):Void;
     
-    public function setVertexUniformData(slot:Int, data:haxe.io.Bytes):Void;
-    public function setFragmentUniformData(slot:Int, data:haxe.io.Bytes):Void; 
+    public function setVertexUniformData(slot:Int, data:haxe.io.Bytes, size:Int):Void;
+    public function setFragmentUniformData(slot:Int, data:haxe.io.Bytes, size:Int):Void; 
     public function setFragmentSampler(slot:Int, texture:BackendTexture, sampler:BackendSampler):Void;
 
     public function drawPrimitives():Void;

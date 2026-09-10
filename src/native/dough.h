@@ -34,13 +34,45 @@ bool dh_is_window_focused(int window_id);
 bool dh_poll_window_events();
 void dh_handle_window_events(int window_id);
 
-void dh_begin_command_buffer();
-void dh_end_command_buffer();
-void dh_acquire_swapchain_texture(int window_id);
-void dh_begin_render_pass(int render_pass_id);
+void dh_begin_render();
+void dh_end_render();
+void dh_set_clear_color(float r, float g, float b, float a);
+void dh_begin_render_pass(int window_id, int render_pass_id);
 void dh_end_render_pass(int render_pass_id);
 
-SDL_GPUShader* dh_load_shader(const char* file, int type);
+void dh_begin_copy_pass();
+void dh_end_copy_pass();
+
+SDL_GPUBuffer* dh_load_vertex_buffer(void* data, int size);
+SDL_GPUBuffer* dh_load_index_buffer(void* data, int size);
+void dh_unload_buffer(SDL_GPUBuffer* buffer);
+
+SDL_GPUTexture* dh_load_texture_from_bytes(void* data, int width, int height, int format);
+SDL_GPUTexture* dh_load_texture_from_file(const char* file);
+void dh_unload_texture(SDL_GPUTexture* texture);
+
+SDL_GPUSampler* dh_load_sampler();
+void dh_unload_sampler(SDL_GPUSampler* sampler);
+
+SDL_GPUShader* dh_load_shader_from_bytes(void* data, int size, int stage, Uint32 sampler_count, Uint32 uniform_buffer_count, Uint32 storage_buffer_count, Uint32 storage_texture_count);
+SDL_GPUShader* dh_load_shader_from_file(const char* file, int stage, Uint32 sampler_count, Uint32 uniform_buffer_count, Uint32 storage_buffer_count, Uint32 storage_texture_count);
 void dh_unload_shader(SDL_GPUShader* shader);
+
+void dh_set_vertex_data_size(int size);
+void dh_add_vertex_attribute(int element_format, int location, int offset);
+SDL_GPUGraphicsPipeline* dh_load_graphics_pipeline(SDL_GPUShader* vertex_shader, SDL_GPUShader* fragment_shader);
+void dh_unload_graphics_pipeline(SDL_GPUGraphicsPipeline* pipeline);
+
+void dh_set_graphics_pipeline(SDL_GPUGraphicsPipeline* pipeline);
+
+void dh_set_vertex_buffer(SDL_GPUBuffer* vertex_buffer);
+void dh_set_index_buffer(SDL_GPUBuffer* index_buffer);
+
+void dh_set_vertex_uniform_data(int slot, void* data, int size); 
+void dh_set_fragment_uniform_data(int slot, void* data, int size);
+void dh_set_fragment_sampler(SDL_GPUTexture* texture, SDL_GPUSampler* sampler); 
+
+void dh_draw_primitives(int vertices, int instances);
+void dh_draw_indexed_primitives(int indices, int instances);
 
 #endif

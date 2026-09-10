@@ -11,14 +11,17 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
 set(SOURCES 
-    src/native/extension.c
     src/native/dough_window.c
     src/native/dough_gpu.c
+    src/native/dough_utils.c
+
+    src/native/ext/ext_window.c
+    src/native/ext/ext_gpu.c
 )
 
 add_subdirectory(libs/SDL EXCLUDE_FROM_ALL)
 add_library(${TARGET_NAME}${TARGET_EXT} SHARED ${SOURCES})
-# target_include_directories(${TARGET_NAME}${TARGET_EXT} PRIVATE libs/stb)
+target_include_directories(${TARGET_NAME}${TARGET_EXT} PRIVATE libs)
 target_link_libraries(${TARGET_NAME}${TARGET_EXT} SDL3::SDL3 m)
 
 set_target_properties(${TARGET_NAME}${TARGET_EXT}

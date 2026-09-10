@@ -15,6 +15,8 @@ int dh_create_window(int width, int height, const char* title, int flags) {
     if(!dh_app_created) {
         dh_app = (dh_internal_application) {0};
         dh_app_created = true;
+        // TODO: i hate myself fix this? move this?
+        dh_init_array(&(dh_app.current_vertex_attribs), sizeof(SDL_GPUVertexAttribute), 3);
     }
 
     if(window_counter > DH_MAX_WINDOWS) {
@@ -84,6 +86,7 @@ void dh_destroy_window(int window_id) {
             }
         }
 
+        dh_free_array(&(dh_app.current_vertex_attribs));
         SDL_DestroyGPUDevice(dh_app.gpu_device);
         SDL_Quit();
     }
