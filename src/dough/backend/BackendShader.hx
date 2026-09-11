@@ -1,3 +1,6 @@
 package dough.backend;
 
-typedef BackendShader = Int;
+import dough.native.Native.NativeShader;
+#if hl
+typedef BackendShader = NativeShader;
+#end

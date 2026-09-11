@@ -1,15 +1,16 @@
 package dough.graphics;
 
-// TODO: Maybe move these types somewhere else?
-enum VSElement {
-    Float2;
-    Float3;
-    Float4;
+enum abstract VSElement(Int) to Int {
+    var Float2 = 0;
+    var Float3 = 1;
+    var Float4 = 2;
 }
 
 class VertexStructure {
-    public var elements:Map<String, VSElement>;
+    public var elements:Map<String, {e:VSElement, l:Int, o:Int}>;
     public var size:Int;
+
+    var counter = 0;
 
     var bytesSizes:Map<VSElement, Int> = [
         Float2 => 2 * 4,
@@ -17,15 +18,18 @@ class VertexStructure {
         Float4 => 4 * 4
     ];
 
-    public function new() {}
+    public function new() {
+        elements = new Map();
+    }
 
     public function add(name:String, type:VSElement) {
-        this.elements.set(name, type);
+        this.elements.set(name, {e:type, l: counter, o:size});
         size += bytesSizes[type];
+        counter++;
     }
 
     public function remove(name:String) { 
-        size -= bytesSizes[elements[name]];
+        size -= bytesSizes[elements[name].e];
         this.elements.remove(name);
     }
 }

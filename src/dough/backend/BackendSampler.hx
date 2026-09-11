@@ -1,3 +1,6 @@
 package dough.backend;
 
-typedef BackendSampler = Int; 
+import dough.native.Native.NativeSampler;
+#if hl
+typedef BackendSampler = NativeSampler; 
+#end

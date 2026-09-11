@@ -1,3 +1,6 @@
 package dough.backend;
 
-typedef BackendTexture = Int; 
+import dough.native.Native.NativeTexture;
+#if hl
+typedef BackendTexture = NativeTexture; 
+#end

@@ -1,3 +1,4 @@
 -p ../src
 -m Main
 -hl out.hl
+-lib mathmath

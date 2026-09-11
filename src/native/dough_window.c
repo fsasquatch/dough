@@ -152,6 +152,10 @@ bool dh_toggle_fullscreen(int window_id, bool borderless) {
     return SDL_SetWindowFullscreen(dh_app.windows[window_id].sdl_window, dh_app.windows[window_id].is_fullscreen);
 }
 
+bool dh_is_window_minimized(int window_id) {
+    return dh_app.windows[window_id].is_minimized; 
+}
+
 bool dh_minimize_window(int window_id) {
     return SDL_MinimizeWindow(dh_app.windows[window_id].sdl_window);
 }

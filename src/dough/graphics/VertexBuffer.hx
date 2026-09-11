@@ -1,16 +1,15 @@
 package dough.graphics;
 
+import dough.backend.BackendBufferObject;
 import haxe.io.Float32Array;
 
-class VertexBuffer {
-    public var data:haxe.io.Float32Array;
-    public var structure:VertexStructure;
-
-    public function new(data:Array<Float>, structure:VertexStructure) {
-        this.data = Float32Array.fromArray(data);
-        this.structure = structure;
+abstract VertexBuffer(BackendBufferObject) to BackendBufferObject {
+    public inline function new(array:Array<Float>) {
+        var buf = Float32Array.fromArray(array);
+        this = Application.instance.gpu.loadVertexBuffer(buf.getData().bytes, buf.length * 4); 
     }
 
-    public function upload() {
+    public inline function unload() {
+        Application.instance.gpu.unloadBuffer(this);
     }
 }

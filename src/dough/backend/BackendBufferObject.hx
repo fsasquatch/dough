@@ -1,3 +1,6 @@
 package dough.backend;
 
-typedef BackendBufferObject = Int;
+import dough.native.Native;
+#if hl
+typedef BackendBufferObject = NativeBuffer;
+#end

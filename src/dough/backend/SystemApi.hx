@@ -15,7 +15,7 @@ interface SystemApi {
     public function getPrimaryDisplay():Int;
     public function isWindowFullscreen(window:Int):Bool;
     public function toggleFullscreen(window:Int, borderless:Bool):Bool;
-    public function isWindowMinized(window:Int):Bool;
+    public function isWindowMinimized(window:Int):Bool;
     public function minimizeWindow(window:Int):Bool;
     public function isWindowMaximized(window:Int):Bool;
     public function maximizeWindow(window:Int):Bool;
@@ -36,13 +36,12 @@ interface SystemApi {
    
     public function loadBytes(file:String):haxe.io.Bytes;
     public function loadText(file:String):String;
-    public function saveBytes(file:haxe.io.Bytes):Void;
-    public function saveText(file:String):Void;
+    public function writeBytes(file:haxe.io.Bytes):Void;
+    public function writeText(file:String):Void;
 
     public function listFileEntries(location:String):Array<String>;
     public function fileExists(file:String):Bool;
 
-    public function handleEvents():Void;
     public function isKeyDown(key:Int):Bool;
     public function isKeyJustDown(key:Int):Bool;
     public function isKeyReleased(key:Int):Bool;
@@ -56,6 +55,10 @@ interface SystemApi {
     public function getGamepadAxisCount(gamepad:Int):Int;
     public function getGamepadAxisMovement(gamepad:Int, axis:Int):Float;
     public function setGamepadVibration(gamepad:Int, leftMotor:Float, rightMotor:Float, durationSec:Float):Void;
+
+    public function isMouseButtonDown(button:Int):Bool;
+    public function isMouseButtonJustDown(button:Int):Bool;
+    public function isMouseButtonReleased(button:Int):Bool;
 
     public function getMousePositionX():Int;
     public function getMousePositionY():Int;

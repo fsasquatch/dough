@@ -1,3 +1,6 @@
 package dough.backend;
 
-typedef BackendGraphicsPipeline = Int;
+import dough.native.Native.NativeGraphicsPipeline;
+#if hl
+typedef BackendGraphicsPipeline = NativeGraphicsPipeline;
+#end

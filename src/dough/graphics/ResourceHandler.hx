@@ -1,4 +1,4 @@
 package dough.graphics;
 
-class ShaderPipeline {
+class ResourceHandler {
 }

@@ -1,0 +1,11 @@
+{
+    "name": "dough",
+    "url": "https://github.com/fsasquatch/dough",
+    "license": "MIT",
+    "tags": [],
+    "description": "Low level abstraction for cross-platform development",
+    "version": "0.0.1",
+    "releasenote": "released",
+    "contributors": ["fsasquatch"],
+    "classPath": "src"
+}

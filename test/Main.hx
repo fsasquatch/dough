@@ -1,77 +1,81 @@
-import haxe.io.UInt16Array;
-import haxe.io.Float32Array;
-import dough.native.Native;
+import dough.Application;
+import dough.graphics.*;
+import dough.graphics.VertexStructure;
+
+var vertexBuffer:VertexBuffer;
+var indexBuffer:I16Buffer;
+var pipeline:GraphicsPipeline;
+var texture:Texture;
+var sampler:Sampler;
 
 function main() {
-    var window = Native.createWindow(1280, 720, "hello world", 0);
-    var window2 = Native.createWindow(800, 600, "another window?", 0);
+    var app = new Application(1280, 720, "Game");
+    app.onCreate =  () -> {
+        var vsInfo:ShaderInformation = {
+            samplers: 0,
+            uniformBuffers: 0,
+            storageBuffers: 0,
+            storageTextures: 0
+        };
+        var vertexShader = new Shader("content/shader.vert.spv", Vertex, vsInfo);
+        var fsInfo:ShaderInformation = {
+            samplers: 1,
+            uniformBuffers: 0,
+            storageBuffers: 0,
+            storageTextures: 0,
+        };
+        var fragmentShader = new Shader("content/shader.frag.spv", Fragment, fsInfo); 
 
-    var vertexShader = Native.loadShaderFromFile("content/triangle.vert.spv", 0, 0, 0, 0, 0);
-    var fragmentShader = Native.loadShaderFromFile("content/triangle.frag.spv", 1, 1, 0, 0, 0);
+        var vs = new VertexStructure();
+        vs.add("position", VSElement.Float3);
+        vs.add("color", VSElement.Float4);
+        vs.add("uv", VSElement.Float2);
 
-    var arr = [
-        -0.5,  0.5, 0,   1, 1, 1, 1,    0, 0,
-         0.5,  0.5, 0,   1, 1, 1, 1,    1, 0,
-        -0.5, -0.5, 0,   1, 1, 1, 1,    0, 1,
-         0.5, -0.5, 0,   1, 1, 1, 1,    1, 1,
-    ];
-    var vertices = Float32Array.fromArray(arr);
-   
-    var arr = [
-        0, 1, 2,
-        2, 1, 3
-    ];
-    var indices = UInt16Array.fromArray(arr);
+        pipeline = new GraphicsPipeline(vertexShader, fragmentShader, vs); 
+        pipeline.load();
 
-    Native.beginCopyPass();
-    var vertexBuffer = Native.loadVertexBuffer(vertices.getData().bytes, vertices.length * 4);
-    var indexBuffer = Native.loadIndexBuffer(indices.getData().bytes, indices.length * 2);
-    
-    var texture = Native.loadTextureFromFile("content/image.png");
-    
-    Native.endCopyPass();
-    var sampler = Native.loadSampler();
+        vertexShader.unload();
+        fragmentShader.unload();
 
-    Native.setVertexDataSize(9 * 4);
-    Native.addVertexAttribute(1, 0, 0);
-    Native.addVertexAttribute(3, 1, 3 * 4);
-    Native.addVertexAttribute(0, 2, (3*4) + (4*4));
-    var pipeline = Native.loadGraphicsPipeline(vertexShader, fragmentShader);
-    Native.unloadShader(vertexShader);
-    Native.unloadShader(fragmentShader);
+        var vertices = [
+            -0.5,  0.5, 0,   1, 1, 1, 1,    0, 0,
+             0.5,  0.5, 0,   1, 1, 1, 1,    1, 0,
+            -0.5, -0.5, 0,   1, 1, 1, 1,    0, 1,
+             0.5, -0.5, 0,   1, 1, 1, 1,    1, 1,
+        ];
+        vertexBuffer = new VertexBuffer(vertices); 
 
-    while(Native.isWindowRunning(window)) {
-        while(Native.pollWindowEvents()) {
-            Native.handleWindowEvents(window);
-            Native.handleWindowEvents(window2);
-        }
+        var indices = [
+            0, 1, 2,
+            2, 1, 3
+        ];
+        indexBuffer = new I16Buffer(indices); 
 
-        Native.beginRender();
+        texture = new Texture("content/image.png");
+        sampler = new Sampler(); 
+    };
 
-        Native.setClearColor(0, 0, 0, 0);
-        Native.beginRenderPass(window, 0);
-        Native.setGraphicsPipeline(pipeline);
-        Native.setVertexBuffer(vertexBuffer);
-        Native.setIndexBuffer(indexBuffer);
-        Native.setFragmentSampler(texture, sampler);
-        Native.drawIndexedPrimitives(6, 1);
-        Native.endRenderPass(0);
 
-        if(Native.isWindowRunning(window2)) {
-            Native.setClearColor(0, 0.5, 0.5, 0);
-            Native.beginRenderPass(window2, 0);
-            Native.endRenderPass(0);
-        }
+    app.onDraw = () -> {
+        Graphics.begin(0);
+        Graphics.setClearColor(Color.RED);
 
-        Native.endRender();
+        Graphics.set(pipeline);
+        Graphics.set(vertexBuffer);
+        Graphics.set(indexBuffer);
+        Graphics.set(texture, sampler);
+        Graphics.draw();
 
-        if(!Native.isWindowRunning(window2)) Native.destroyWindow(window2);
+        Graphics.end();
     }
 
-    Native.unloadBuffer(vertexBuffer);
-    Native.unloadBuffer(indexBuffer);
-    Native.unloadTexture(texture);
-    Native.unloadSampler(sampler);
-    Native.unloadGraphicsPipeline(pipeline);
-    Native.destroyWindow(window);
+    app.onDestroy = () -> {
+        vertexBuffer.unload();
+        indexBuffer.unload();
+        texture.unload();
+        sampler.unload();
+        pipeline.unload();
+    }
+
+    app.run();
 }

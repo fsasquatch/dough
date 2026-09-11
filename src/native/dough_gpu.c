@@ -7,6 +7,7 @@
 extern dh_internal_application dh_app;
 int vertex_data_size = 0;
 SDL_FColor clear_color = {0, 0, 0, 1};
+bool copy_pass_active = false;
 
 void dh_begin_render() {
     dh_app.command_buffer = SDL_AcquireGPUCommandBuffer(dh_app.gpu_device);
@@ -47,11 +48,13 @@ void dh_end_render_pass(int render_pass_id) {
 void dh_begin_copy_pass() {
     dh_app.command_buffer = SDL_AcquireGPUCommandBuffer(dh_app.gpu_device);
     dh_app.copy_pass = SDL_BeginGPUCopyPass(dh_app.command_buffer);
+    copy_pass_active = true;
 }
 
 void dh_end_copy_pass() {
     SDL_EndGPUCopyPass(dh_app.copy_pass);
     SDL_SubmitGPUCommandBuffer(dh_app.command_buffer);
+    copy_pass_active = false;
 }
 
 // TODO: Cycling
@@ -72,8 +75,7 @@ SDL_GPUBuffer* dh_load_vertex_buffer(void* data, int size) {
     SDL_memcpy(transfer_data, data, size);
     SDL_UnmapGPUTransferBuffer(dh_app.gpu_device, transfer_buffer);
 
-    if(dh_app.copy_pass != NULL) {
-        SDL_Log("copy pass active");
+    if(copy_pass_active) {
         SDL_UploadToGPUBuffer(dh_app.copy_pass, &(SDL_GPUTransferBufferLocation) {
             .transfer_buffer = transfer_buffer,
             .offset = 0
@@ -84,7 +86,6 @@ SDL_GPUBuffer* dh_load_vertex_buffer(void* data, int size) {
         }, false);
     } else {
         dh_begin_copy_pass();
-        SDL_Log("copy pass not active");
         SDL_UploadToGPUBuffer(dh_app.copy_pass, &(SDL_GPUTransferBufferLocation) {
             .transfer_buffer = transfer_buffer,
             .offset = 0
@@ -116,7 +117,7 @@ SDL_GPUBuffer* dh_load_index_buffer(void* data, int size) {
     SDL_memcpy(transfer_data, data, size);
     SDL_UnmapGPUTransferBuffer(dh_app.gpu_device, transfer_buffer);
 
-    if(dh_app.copy_pass != NULL) {
+    if(copy_pass_active) {
         SDL_UploadToGPUBuffer(dh_app.copy_pass, &(SDL_GPUTransferBufferLocation) {
             .transfer_buffer = transfer_buffer,
             .offset = 0
@@ -169,7 +170,7 @@ SDL_GPUTexture* dh_load_texture_from_bytes(void* data, int width, int height, in
     SDL_memcpy(transfer_data, data, size);
     SDL_UnmapGPUTransferBuffer(dh_app.gpu_device, transfer_buffer);
 
-    if(dh_app.copy_pass != NULL) {
+    if(copy_pass_active) {
         SDL_UploadToGPUTexture(dh_app.copy_pass, &(SDL_GPUTextureTransferInfo) {
             .transfer_buffer = transfer_buffer,
         }, &(SDL_GPUTextureRegion) {
@@ -198,7 +199,7 @@ SDL_GPUTexture* dh_load_texture_from_bytes(void* data, int width, int height, in
 
 SDL_GPUTexture* dh_load_texture_from_file(const char* file) {
     int image_width, image_height;
-    stbi_set_flip_vertically_on_load(1);
+    stbi_set_flip_vertically_on_load(0);
     void* image_data = stbi_load(file, &image_width, &image_height, NULL, 4);
     return dh_load_texture_from_bytes(image_data, image_width, image_height, -1);
 }

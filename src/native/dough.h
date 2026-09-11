@@ -24,7 +24,7 @@ bool dh_set_current_display(int window_id, int display);
 int dh_get_primary_display();
 bool dh_is_window_fullscreen(int window_id);
 bool dh_toggle_fullscreen(int window_id, bool borderless);
-bool dh_is_window_minized(int window_id);
+bool dh_is_window_minimized(int window_id);
 bool dh_minimize_window(int window_id);
 bool dh_is_window_maximized(int window_id);
 bool dh_maximize_window(int window_id);

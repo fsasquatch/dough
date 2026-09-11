@@ -1,5 +1,6 @@
 package dough.backend;
 
+import haxe.io.Bytes;
 import dough.graphics.*;
 
 interface GpuApi {
@@ -17,8 +18,8 @@ interface GpuApi {
     public function endCopyPass():Void;
 
     // loads a vertex buffer to the gpu
-    public function loadVertexBuffer(vertexBuffer:VertexBuffer):BackendBufferObject;
-    public function loadIndexBuffer(indexBuffer:IndexBuffer):BackendBufferObject;
+    public function loadVertexBuffer(data:Bytes, size:Int):BackendBufferObject;
+    public function loadIndexBuffer(data:Bytes, size:Int):BackendBufferObject;
     public function unloadBuffer(buffer:BackendBufferObject):Void;
 
     public function loadTextureFromFile(file:String):BackendTexture;
@@ -31,12 +32,14 @@ interface GpuApi {
     public function loadSampler():BackendSampler;
     public function unloadSampler(sampler:BackendSampler):Void;
 
-    public function loadShader(file:String, type:Int):BackendShader;
+    public function loadShaderFromFile(file:String, type:Int, info:dough.graphics.ShaderInformation):BackendShader;
+    public function loadShaderFromBytes(data:haxe.io.Bytes, size:Int, type:Int, info:dough.graphics.ShaderInformation):BackendShader;
     public function unloadShader(shader:BackendShader):Void;
 
     // TODO: pipeline configuration for depth texture
     public function loadGraphicsPipeline(vertexShader:BackendShader, fragementShader:BackendShader, inputStructure:VertexStructure):BackendGraphicsPipeline;
     public function unloadGraphicsPipeline(pipeline:BackendGraphicsPipeline):Void;
+
     public function setGraphicsPipeline(pipeline:BackendGraphicsPipeline):Void;
 
     public function setVertexBuffer(buffer:BackendBufferObject):Void;
@@ -44,8 +47,8 @@ interface GpuApi {
     
     public function setVertexUniformData(slot:Int, data:haxe.io.Bytes, size:Int):Void;
     public function setFragmentUniformData(slot:Int, data:haxe.io.Bytes, size:Int):Void; 
-    public function setFragmentSampler(slot:Int, texture:BackendTexture, sampler:BackendSampler):Void;
+    public function setFragmentSampler(texture:BackendTexture, sampler:BackendSampler):Void;
 
-    public function drawPrimitives():Void;
-    public function drawIndexedPrimitives():Void;
+    public function drawPrimitives(vertices:Int, instances:Int):Void;
+    public function drawIndexedPrimitives(indices:Int, instances:Int):Void;
 }
