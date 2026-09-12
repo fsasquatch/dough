@@ -1,3 +1,5 @@
+import mathmath.linalg.*;
+import mathmath.MathMath;
 import dough.Application;
 import dough.graphics.*;
 import dough.graphics.VertexStructure;
@@ -13,7 +15,7 @@ function main() {
     app.onCreate =  () -> {
         var vsInfo:ShaderInformation = {
             samplers: 0,
-            uniformBuffers: 0,
+            uniformBuffers: 1,
             storageBuffers: 0,
             storageTextures: 0
         };
@@ -52,14 +54,22 @@ function main() {
         indexBuffer = new I16Buffer(indices); 
 
         texture = new Texture("content/image.png");
-        sampler = new Sampler(); 
+        sampler = new Sampler();
     };
 
 
+    var rotation = 0;
     app.onDraw = () -> {
-        Graphics.begin(0);
-        Graphics.setClearColor(Color.RED);
+        var model = Matrix4x4.matrixCompose(new Vector3(0, 0, -2), Quaternion.fromAxisAngle(new Vector3(0, 0, 1), MathMath.degreesToRadians(rotation)), new Vector3(1, 1, 1));
+        var view = Matrix4x4.lookAt(new Vector3(0, 0, 2), new Vector3(0, 0, -2), new Vector3(0, 1, 0));
+        var projection = Matrix4x4.perspectiveNO(MathMath.degreesToRadians(70), 1280 / 720, 0.0001, 10000);
+    
+        var mat = view * model * projection;
 
+        Graphics.begin(0);
+        Graphics.setClearColor(Color.BLACK);
+
+        Graphics.setVertexUniform(0, mat);
         Graphics.set(pipeline);
         Graphics.set(vertexBuffer);
         Graphics.set(indexBuffer);

@@ -2,6 +2,7 @@ package dough.graphics;
 
 import dough.backend.BackendGraphicsPipeline;
 
+// TODO: More detailed pipeline creation
 class GraphicsPipeline {
     public var vertexShader:Shader;
     public var fragmentShader:Shader;
