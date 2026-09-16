@@ -21,7 +21,7 @@ set(SOURCES
 
 add_subdirectory(libs/SDL EXCLUDE_FROM_ALL)
 add_library(${TARGET_NAME}${TARGET_EXT} SHARED ${SOURCES})
-target_include_directories(${TARGET_NAME}${TARGET_EXT} PRIVATE libs)
+target_include_directories(${TARGET_NAME}${TARGET_EXT} PRIVATE libs/stb)
 target_link_libraries(${TARGET_NAME}${TARGET_EXT} SDL3::SDL3 m)
 
 set_target_properties(${TARGET_NAME}${TARGET_EXT}

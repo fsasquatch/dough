@@ -1,10 +1,13 @@
 package dough.backend.sdl;
 
+import dough.system.Keys;
 import sys.FileSystem;
 import sys.io.File;
 import dough.native.Dough;
 
 class SDLSystem implements SystemApi {
+    var scancodeKeyMap:Map<Keys, Int> = [];
+
     public function new() {}
 
     public function createWindow(width:Int, height:Int, title:String):Int {
@@ -13,7 +16,50 @@ class SDLSystem implements SystemApi {
         #else
         return Dough.createWindow(width, height, title, false);
         #end
+        setupKeys();
         return 0;
+    }
+    
+    function setupKeys() {
+        for(i in 4...39) scancodeKeyMap.set(i-3, i);
+        scancodeKeyMap.set(40, ENTER);
+        scancodeKeyMap.set(41, ESCAPE);
+        scancodeKeyMap.set(42, BACKSPACE);
+        scancodeKeyMap.set(43, TAB);
+        scancodeKeyMap.set(44, SPACE);
+        scancodeKeyMap.set(45, MINUS);
+        scancodeKeyMap.set(46, EQUALS);
+        scancodeKeyMap.set(47, LEFT_BRACKET);
+        scancodeKeyMap.set(48, RIGHT_BRACKET);
+        scancodeKeyMap.set(49, BACKSLASH);
+        scancodeKeyMap.set(51, SEMICOLON);
+        scancodeKeyMap.set(52, APOSTROPHE);
+        scancodeKeyMap.set(53, GRAVE);
+        scancodeKeyMap.set(54, COMMA);
+        scancodeKeyMap.set(55, PERIOD);
+        scancodeKeyMap.set(56, SLASH);
+        scancodeKeyMap.set(58, F1);
+        scancodeKeyMap.set(59, F2);
+        scancodeKeyMap.set(60, F3);
+        scancodeKeyMap.set(61, F4);
+        scancodeKeyMap.set(62, F5);
+        scancodeKeyMap.set(63, F6);
+        scancodeKeyMap.set(64, F7);
+        scancodeKeyMap.set(65, F8);
+        scancodeKeyMap.set(66, F9);
+        scancodeKeyMap.set(67, F10);
+        scancodeKeyMap.set(68, F11);
+        scancodeKeyMap.set(69, F12);
+        scancodeKeyMap.set(79, RIGHT);
+        scancodeKeyMap.set(80, LEFT);
+        scancodeKeyMap.set(81, DOWN);
+        scancodeKeyMap.set(82, UP);
+        scancodeKeyMap.set(224, LEFT_CTRL);
+        scancodeKeyMap.set(225, LEFT_SHIFT);
+        scancodeKeyMap.set(226, LEFT_ALT);
+        scancodeKeyMap.set(228, RIGHT_CTRL);
+        scancodeKeyMap.set(229, RIGHT_SHIFT);
+        scancodeKeyMap.set(230, RIGHT_ALT);
     }
 
     public function destroyWindow(window:Int) {
@@ -177,15 +223,15 @@ class SDLSystem implements SystemApi {
     }
 
     public function isKeyDown(key:Int):Bool {
-        return Dough.isKeyDown(key);
+        return Dough.isKeyDown(scancodeKeyMap[key]);
     }
 
     public function isKeyJustDown(key:Int):Bool {
-        return Dough.isKeyJustDown(key);
+        return Dough.isKeyJustDown(scancodeKeyMap[key]);
     }
 
     public function isKeyReleased(key:Int):Bool {
-        return Dough.isKeyReleased(key);
+        return Dough.isKeyReleased(scancodeKeyMap[key]);
     }
 
     public function isGamepadAvailable(gamepad:Int):Bool {

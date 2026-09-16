@@ -5,12 +5,8 @@ class Window {
     public var height(get, set):Int;
     public var title:String;
 
-    //public var x(get, set):Int;
-    //public var y(get, set):Int;
-
-    // Window flags
-    //public var decorations(get, null):Bool;
-    //public var resizable(get, null):Bool;
+//    public var x(get, set):Int;
+//    public var y(get, set):Int;
 
     public var currentDisplay(get, null):Int;
 
