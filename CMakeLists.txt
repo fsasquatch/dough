@@ -11,11 +11,11 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
 set(SOURCES 
-    src/native/dough_window.c
+    src/native/dough_system.c
     src/native/dough_gpu.c
     src/native/dough_utils.c
 
-    src/native/ext/ext_window.c
+    src/native/ext/ext_system.c
     src/native/ext/ext_gpu.c
 )
 

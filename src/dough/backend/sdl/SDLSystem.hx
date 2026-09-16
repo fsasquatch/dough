@@ -1,154 +1,191 @@
 package dough.backend.sdl;
 
-import dough.native.Native;
+import sys.FileSystem;
+import sys.io.File;
+import dough.native.Dough;
 
 class SDLSystem implements SystemApi {
     public function new() {}
 
-    public function createWindow(width:Int, height:Int, title:String, flags:Int):Int {
-        return Native.createWindow(width, height, title, flags);
+    public function createWindow(width:Int, height:Int, title:String):Int {
+        #if debug
+        return Dough.createWindow(width, height, title, true);
+        #else
+        return Dough.createWindow(width, height, title, false);
+        #end
+        return 0;
     }
 
     public function destroyWindow(window:Int) {
-        Native.destroyWindow(window);
+        Dough.destroyWindow(window);
     }
 
     public function isWindowRunning(window:Int):Bool {
-        return Native.isWindowRunning(window);
+        return Dough.isWindowRunning(window);
     }
 
     public function getWindowWidth(window:Int):Int {
-        return Native.getWindowWidth(window);
+        return Dough.getWindowWidth(window);
     }
 
     public function getWindowHeight(window:Int):Int {
-        return Native.getWindowHeight(window);
+        return Dough.getWindowHeight(window);
     }
 
     public function setWindowSize(window:Int, w:Int, h:Int):Bool {
-        return Native.setWindowSize(window, w, h);
+        return Dough.setWindowSize(window, w, h);
     }
 
     public function getWindowX(window:Int):Int {
-        return Native.getWindowX(window);
+        return Dough.getWindowX(window);
     }
 
     public function getWindowY(window:Int):Int {
-        return Native.getWindowY(window);
+        return Dough.getWindowY(window);
     }
 
     public function setWindowPosition(window:Int, w:Int, h:Int):Bool {
-        return Native.setWindowPosition(window, w, h);
+        return Dough.setWindowPosition(window, w, h);
     }
 
     public function getCurrentDisplay(window:Int):Int {
-        return Native.getCurrentDisplay(window);
+        return Dough.getCurrentDisplay(window);
     }
 
     public function setCurrentDisplay(window:Int, display:Int):Bool {
-        return Native.setCurrentDisplay(window, display); 
+        return Dough.setCurrentDisplay(window, display); 
     }
 
     public function getPrimaryDisplay():Int {
-        return Native.getPrimaryDisplay();
+        return Dough.getPrimaryDisplay();
     }
 
     public function isWindowFullscreen(window:Int):Bool {
-        return Native.isWindowFullscreen(window);
+        return Dough.isWindowFullscreen(window);
     }
 
     public function toggleFullscreen(window:Int, borderless:Bool):Bool {
-        return Native.toggleFullscreen(window, borderless);
+        return Dough.toggleFullscreen(window, borderless);
     }
 
     public function isWindowMinimized(window:Int):Bool {
-        //return Native.isWindowMinimized(window);
-        return false;
+        return Dough.isWindowMinimized(window);
     }
 
     public function minimizeWindow(window:Int):Bool {
-        return Native.minimizeWindow(window);
+        return Dough.minimizeWindow(window);
     }
 
     public function isWindowMaximized(window:Int):Bool {
-        return false;
+        return Dough.isWindowMaximized(window);
     }
 
     public function maximizeWindow(window:Int):Bool {
-        return Native.maximizeWindow(window);
+        return Dough.maximizeWindow(window);
+    }
+
+    public function restoreWindow(window:Int):Bool {
+        return Dough.restoreWindow(window);
     }
 
     public function raiseWindow(window:Int):Bool {
-        return Native.raiseWindow(window);
+        return Dough.raiseWindow(window);
+    }
+
+    public function isWindowResizable(window:Int):Bool {
+        return Dough.isWindowResizable(window);
+    }
+
+    public function setWindowResizable(window:Int, resizable:Bool):Bool {
+        return Dough.setWindowResizable(window, resizable);
+    }
+
+    public function isWindowFocused(window:Int):Bool {
+        return Dough.isWindowFocused(window);
+    }
+
+    public function focusWindow(window:Int):Bool {
+        return Dough.focusWindow(window);
     }
 
     public function pollWindowEvents():Bool {
-        return Native.pollWindowEvents();
+        return Dough.pollWindowEvents();
     }
 
     public function handleWindowEvents(window:Int){
-        Native.handleWindowEvents(window);
+        Dough.handleWindowEvents(window);
     }
 
     public function showCursor() {
+        Dough.showCursor();
     }
 
     public function hideCursor() {
+        Dough.hideCursor();
     }
 
-    public function enableCursor() {
+    public function lockCursor(window:Int) {
+        Dough.lockCursor(window);
     }
 
-    public function disableCursor() {
+    public function unlockCursor(window:Int) {
+        Dough.unlockCursor(window);
     }
 
     public function setClipboardText(text:String) {
+        Dough.setClipboardText(text);
     }
 
     public function getClipboardText():String {
-        return "not implemented";
+        return Dough.getClipboardText();
     }
 
     public function getFrameTime():Float {
-        return -1;
+        return Dough.getFrameTime();
     }
 
     public function getElapsedTime():Float {
-        return -1;
+        return Dough.getElapsedTime();
     }
     
     public function loadBytes(file:String):haxe.io.Bytes {
-        return null;
+        return File.getBytes(file);
     }
 
     public function loadText(file:String):String {
-        return null;
+        return File.getContent(file);
     }
 
-    public function writeBytes(file:haxe.io.Bytes) {
+    public function writeBytes(file:String, content:haxe.io.Bytes) {
+        File.saveBytes(file, content); 
     }
 
-    public function writeText(file:String) {
+    public function writeText(file:String, content:String) {
+        File.saveContent(file, content);
     }
 
     public function listFileEntries(location:String):Array<String> {
-        return null;
+        return FileSystem.readDirectory(location);
     }
 
     public function fileExists(file:String):Bool {
-        return false;
+        return FileSystem.exists(file);
+    }
+
+    public function isDirectory(entry:String):Bool {
+        return FileSystem.isDirectory(entry);
     }
 
     public function isKeyDown(key:Int):Bool {
-        return false;
+        return Dough.isKeyDown(key);
     }
 
     public function isKeyJustDown(key:Int):Bool {
-        return false;
+        return Dough.isKeyJustDown(key);
     }
 
     public function isKeyReleased(key:Int):Bool {
-        return false;
+        return Dough.isKeyReleased(key);
     }
 
     public function isGamepadAvailable(gamepad:Int):Bool {
@@ -183,32 +220,38 @@ class SDLSystem implements SystemApi {
     }
 
     public function isMouseButtonDown(button:Int):Bool {
-        return false;
+        return Dough.isMouseButtonDown(button);
     }
 
     public function isMouseButtonJustDown(button:Int):Bool {
-        return false;
+        return Dough.isMouseButtonJustDown(button);
     }
 
     public function isMouseButtonReleased(button:Int):Bool {
-        return false;
+        return Dough.isMouseButtonReleased(button);
     }
 
     public function getMousePositionX():Int {
-        return -1;
+        return Dough.getMousePositionX();
     }
 
     public function getMousePositionY():Int {
-        return -1;
+        return Dough.getMousePositionY();
     }
 
-    public function setMousePosition(x:Int, y:Int) {
+    public function setMousePosition(window:Int, x:Int, y:Int) {
+        return Dough.setMousePosition(window, x, y);
     }
 
-    public function getMouseWheelMovement():Float {
-        return -1;
+    public function getMouseWheelMovementX():Float {
+        return Dough.getMouseWheelMovementX();
+    }
+
+    public function getMouseWheelMovementY():Float {
+        return Dough.getMouseWheelMovementY();
     }
 
     public function setMouseCursor(cursor:Int) {
+        Dough.setMouseCursor(cursor);
     }
 }

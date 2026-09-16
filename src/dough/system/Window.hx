@@ -17,7 +17,7 @@ class Window {
     var backendID:Int;
 
     public function new(width:Int, height:Int, title:String) {
-        backendID = Application.instance.system.createWindow(width, height, title, 0);
+        backendID = Application.instance.system.createWindow(width, height, title);
     }
 
     public function destroy() {

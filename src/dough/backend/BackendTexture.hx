@@ -1,6 +1,7 @@
 package dough.backend;
 
-import dough.native.Native.NativeTexture;
 #if hl
-typedef BackendTexture = NativeTexture; 
+typedef BackendTexture = dough.native.Dough.NativeTexture; 
+#elseif js
+typedef BackendTexture = js.html.webgl.Texture;
 #end

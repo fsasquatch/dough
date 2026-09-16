@@ -3,4 +3,6 @@ build
 test/out.hl
 test/*.hdll
 test/content
+test/out.js
+test/index.html
 build.hxml

@@ -15,10 +15,12 @@ typedef struct dh_internal_window {
     int window_flags;
 
     bool is_running;
+    bool is_resizable;
     bool is_fullscreen;
     bool is_maximized;
     bool is_minimized;
     bool is_focused;
+    bool was_resized;
 
     SDL_Window* sdl_window;
     SDL_WindowID sdl_window_id;
@@ -28,8 +30,7 @@ typedef struct dh_internal_application {
     dh_internal_window windows[DH_MAX_WINDOWS];
     bool exit;
 
-    bool enable_log_debug;
-    bool enable_gpu_debug;
+    bool debug;
 
     Uint64 last_ticks;
     Uint64 new_ticks;
@@ -37,6 +38,13 @@ typedef struct dh_internal_application {
 
     bool current_key_state[512];
     bool previous_key_state[512];
+
+    bool current_mouse_state[4];
+    bool previous_mouse_state[4];
+    int current_mouse_x;
+    int current_mouse_y;
+    float current_mouse_wheel_delta_x;
+    float current_mouse_wheel_delta_y;
 
     SDL_Event event;
     

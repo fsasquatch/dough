@@ -1,6 +1,7 @@
 package dough.backend;
 
-import dough.native.Native.NativeShader;
 #if hl
-typedef BackendShader = NativeShader;
+typedef BackendShader = dough.native.Dough.NativeShader;
+#elseif js
+typedef BackendShader = js.html.webgl.Shader;
 #end

@@ -12,7 +12,7 @@ class I16Buffer {
     public function new(data:Array<Int>) {
         var buf = UInt16Array.fromArray(data);
         length = buf.length;
-        backendObj = Application.instance.gpu.loadIndexBuffer(buf.getData().bytes, buf.length * 2);
+        backendObj = Application.instance.gpu.loadIndexBuffer(buf, buf.length * 2);
     }
 
     public function unload() {

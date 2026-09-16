@@ -18,8 +18,8 @@ interface GpuApi {
     public function endCopyPass():Void;
 
     // loads a vertex buffer to the gpu
-    public function loadVertexBuffer(data:Bytes, size:Int):BackendBufferObject;
-    public function loadIndexBuffer(data:Bytes, size:Int):BackendBufferObject;
+    public function loadVertexBuffer(data:haxe.io.Float32Array, size:Int):BackendBufferObject;
+    public function loadIndexBuffer(data:haxe.io.UInt16Array, size:Int):BackendBufferObject;
     public function unloadBuffer(buffer:BackendBufferObject):Void;
 
     public function loadTextureFromFile(file:String):BackendTexture;

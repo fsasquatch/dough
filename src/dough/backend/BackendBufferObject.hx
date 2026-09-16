@@ -1,6 +1,7 @@
 package dough.backend;
 
-import dough.native.Native;
 #if hl
-typedef BackendBufferObject = NativeBuffer;
+typedef BackendBufferObject = dough.native.Dough.NativeBuffer;
+#elseif js
+typedef BackendBufferObject = js.html.webgl.Buffer; 
 #end

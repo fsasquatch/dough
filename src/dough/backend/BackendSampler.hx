@@ -1,6 +1,7 @@
 package dough.backend;
 
-import dough.native.Native.NativeSampler;
 #if hl
-typedef BackendSampler = NativeSampler; 
+typedef BackendSampler = dough.native.Dough.NativeSampler; 
+#elseif js
+typedef BackendSampler = js.html.webgl.Sampler;
 #end

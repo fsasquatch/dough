@@ -1,6 +1,7 @@
 package dough.backend;
 
-import dough.native.Native.NativeGraphicsPipeline;
 #if hl
-typedef BackendGraphicsPipeline = NativeGraphicsPipeline;
+typedef BackendGraphicsPipeline = dough.native.Dough.NativeGraphicsPipeline;
+#elseif js
+typedef BackendGraphicsPipeline = js.html.webgl.Program; 
 #end

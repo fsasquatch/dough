@@ -1,16 +1,13 @@
 #include <stdbool.h>
 #include "SDL3/SDL.h"
 
-// TODO: Window focus + internal variables for window min & max
 // TODO: SDL_Log callback to dough logging function
 // TODO: Better error handling in dough_window.c
-
-// TODO: [Feature] Allow for use with other rendering apis?
 
 #ifndef DOUGH_H
 #define DOUGH_H
 
-int dh_create_window(int width, int height, const char* title, int flags);
+int dh_create_window(int width, int height, const char* title, bool debug);
 void dh_destroy_window(int window_id);
 bool dh_is_window_running(int window_id);
 int dh_get_window_width(int window_id);
@@ -28,11 +25,51 @@ bool dh_is_window_minimized(int window_id);
 bool dh_minimize_window(int window_id);
 bool dh_is_window_maximized(int window_id);
 bool dh_maximize_window(int window_id);
+bool dh_restore_window(int window_id);
 bool dh_raise_window(int window_id);
+bool dh_is_window_resizable(int window_id);
+bool dh_set_window_resizable(int window_id, bool resizable);
 bool dh_is_window_focused(int window_id);
+bool dh_focus_window(int window_id);
 // bool dh_set_window_icon();
 bool dh_poll_window_events();
 void dh_handle_window_events(int window_id);
+
+bool dh_is_cursor_shown();
+void dh_show_cursor();
+void dh_hide_cursor();
+void dh_lock_cursor(int window_id);
+void dh_unlock_cursor(int window_id);
+
+void dh_set_clipboard_text(const char* text);
+const char* dh_get_clipboard_text();
+
+double dh_get_frame_time();
+double dh_get_elapsed_time();
+
+bool dh_is_key_down(int key);
+bool dh_is_key_just_down(int key);
+bool dh_is_key_released(int key);
+
+bool dh_is_gamepad_available(int gamepad);
+const char* dh_get_gamepad_name(int gamepad);
+bool dh_is_gamepad_button_down(int gamepad, int button);
+bool dh_is_gamepad_button_just_down(int gamepad, int button);
+bool dh_is_gamepad_button_released(int gamepad, int button);
+int dh_get_gamepad_axis_count(int gamepad);
+float dh_get_gamepad_axis_movement(int gamepad, int axis);
+void dh_set_gamepad_vibration(int gamepad, float left_motor, float right_motor, float duration_sec);
+
+bool dh_is_mouse_button_down(int button);
+bool dh_is_mouse_button_just_down(int button);
+bool dh_is_mouse_button_released(int button);
+
+int dh_get_mouse_position_x();
+int dh_get_mouse_position_y();
+void dh_set_mouse_position(int window_id, int x, int y);
+float dh_get_mouse_wheel_movement_x();
+float dh_get_mouse_wheel_movement_y();
+void dh_set_mouse_cursor(int cursor);
 
 void dh_begin_render();
 void dh_end_render();

@@ -46,9 +46,11 @@ class Application {
 
             if(onUpdate != null) onUpdate();
 
-            dough.native.Native.beginRender();
+            #if !opengl
+            dough.native.Dough.beginRender();
             if(onDraw != null) onDraw();
-            dough.native.Native.endRender();
+            dough.native.Dough.endRender();
+            #end
         }
         #else
         #end

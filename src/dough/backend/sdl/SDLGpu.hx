@@ -1,127 +1,128 @@
 package dough.backend.sdl;
 
+import haxe.io.UInt16Array;
 import haxe.io.Bytes;
 import haxe.io.Float32Array;
 import dough.graphics.*;
-import dough.native.Native;
+import dough.native.Dough;
 
 class SDLGpu implements GpuApi {
     public function new() {}
 
     public function beginRender() {
-        Native.beginRender();
+        Dough.beginRender();
     }
 
     public function endRender() {
-        Native.endRender();
+        Dough.endRender();
     }
 
     public function setClearColor(c:Color) {
-        Native.setClearColor(c.rF, c.gF, c.bF, c.aF);
+        Dough.setClearColor(c.rF, c.gF, c.bF, c.aF);
     }
 
     public function beginRenderPass(window:Int, id:Int) {
-        Native.beginRenderPass(window, id);
+        Dough.beginRenderPass(window, id);
     }
 
     public function endRenderPass(id:Int) {
-        Native.endRenderPass(id);
+        Dough.endRenderPass(id);
     }
 
     public function beginCopyPass() {
-        Native.beginCopyPass();
+        Dough.beginCopyPass();
     }
 
     public function endCopyPass() {
-        Native.endCopyPass();
+        Dough.endCopyPass();
     }
 
-    public function loadVertexBuffer(data:Bytes, size:Int):BackendBufferObject {
+    public function loadVertexBuffer(data:Float32Array, size:Int):BackendBufferObject {
         // length * 4 is because the data is stored as 32bit floats
-        return Native.loadVertexBuffer(data, size * 4);
+        return Dough.loadVertexBuffer(data.getData().bytes, size * 4);
     }
 
-    public function loadIndexBuffer(data:Bytes, size:Int):BackendBufferObject {
-        return Native.loadIndexBuffer(data, size);
+    public function loadIndexBuffer(data:UInt16Array, size:Int):BackendBufferObject {
+        return Dough.loadIndexBuffer(data.getData().bytes, size);
     }
 
     public function unloadBuffer(buffer:BackendBufferObject) {
-        Native.unloadBuffer(buffer);
+        Dough.unloadBuffer(buffer);
     }
 
     public function loadTextureFromFile(file:String):BackendTexture {
-        return Native.loadTextureFromFile(file);
+        return Dough.loadTextureFromFile(file);
     }
 
     public function loadTextureFromBytes(bytes:haxe.io.Bytes, width:Int, height:Int, format:Int):BackendTexture {
-        return Native.loadTextureFromBytes(bytes, width, height, format);
+        return Dough.loadTextureFromBytes(bytes, width, height, format);
     }
 
     public function unloadTexture(t:BackendTexture) {
-        Native.unloadTexture(t);
+        Dough.unloadTexture(t);
     }
 
     public function loadSampler():BackendSampler {
-        return Native.loadSampler();
+        return Dough.loadSampler();
     }
 
     public function unloadSampler(sampler:BackendSampler) {
-        return Native.unloadSampler(sampler);
+        return Dough.unloadSampler(sampler);
     }
 
     public function loadShaderFromFile(file:String, type:Int, info:dough.graphics.ShaderInformation):BackendShader {
-        return Native.loadShaderFromFile(file, type, info.samplers, info.uniformBuffers, info.storageBuffers, info.storageTextures);
+        return Dough.loadShaderFromFile(file, type, info.samplers, info.uniformBuffers, info.storageBuffers, info.storageTextures);
     }
 
     public function loadShaderFromBytes(data:haxe.io.Bytes, size:Int, type:Int, info:dough.graphics.ShaderInformation):BackendShader {
-        return Native.loadShaderFromBytes(data, size, type, info.samplers, info.uniformBuffers, info.storageBuffers, info.storageTextures);
+        return Dough.loadShaderFromBytes(data, size, type, info.samplers, info.uniformBuffers, info.storageBuffers, info.storageTextures);
     }
 
     public function unloadShader(shader:BackendShader) {
-        Native.unloadShader(shader);
+        Dough.unloadShader(shader);
     }
 
     public function loadGraphicsPipeline(v:BackendShader, f:BackendShader, vs:VertexStructure):BackendGraphicsPipeline {
-        Native.setVertexDataSize(vs.size);
+        Dough.setVertexDataSize(vs.size);
         for(e in vs.elements) {
-            Native.addVertexAttribute(e.e, e.l, e.o);
+            Dough.addVertexAttribute(e.e, e.l, e.o);
         }
-        return Native.loadGraphicsPipeline(v, f);
+        return Dough.loadGraphicsPipeline(v, f);
     }
 
     public function unloadGraphicsPipeline(pipeline:BackendGraphicsPipeline) {
-        Native.unloadGraphicsPipeline(pipeline);
+        Dough.unloadGraphicsPipeline(pipeline);
     }
 
     public function setGraphicsPipeline(pipeline:BackendGraphicsPipeline) {
-        Native.setGraphicsPipeline(pipeline);
+        Dough.setGraphicsPipeline(pipeline);
     }
 
     public function setVertexBuffer(buffer:BackendBufferObject) {
-        Native.setVertexBuffer(buffer);
+        Dough.setVertexBuffer(buffer);
     }
 
     public function setIndexBuffer(buffer:BackendBufferObject) {
-        Native.setIndexBuffer(buffer);
+        Dough.setIndexBuffer(buffer);
     }
 
     public function setVertexUniformData(slot:Int, data:haxe.io.Bytes, size:Int) {
-        Native.setVertexUniformData(slot, data, size);
+        Dough.setVertexUniformData(slot, data, size);
     }
 
     public function setFragmentUniformData(slot:Int, data:haxe.io.Bytes, size:Int) {
-        Native.setFragmentUniformData(slot, data, size);
+        Dough.setFragmentUniformData(slot, data, size);
     }
 
     public function setFragmentSampler(texture:BackendTexture, sampler:BackendSampler) {
-        Native.setFragmentSampler(texture, sampler);
+        Dough.setFragmentSampler(texture, sampler);
     }
 
     public function drawPrimitives(vertices:Int, instances:Int) {
-        Native.drawPrimitives(vertices, instances);
+        Dough.drawPrimitives(vertices, instances);
     }
 
     public function drawIndexedPrimitives(indices:Int, instances:Int) {
-        Native.drawIndexedPrimitives(indices, instances);
+        Dough.drawIndexedPrimitives(indices, instances);
     }
 }
