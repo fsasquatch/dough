@@ -18,6 +18,9 @@ class Window {
     public var maximized(get, set):Bool;
     public var focused(get, set):Bool;
 
+    /*
+        This is broken.
+    */
     public var onResize:()->Void;
 
     var backendID:Int;
