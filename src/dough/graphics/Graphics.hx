@@ -13,7 +13,7 @@ class Graphics {
     public static inline function begin(id:Int, window:Window = null) {
         currentRenderPass = id;
         
-        if(window == null) Application.instance.gpu.beginRenderPass(@:privateAccess Application.instance.mainWindow.backendID, currentRenderPass);
+        if(window == null) Application.instance.gpu.beginRenderPass(@:privateAccess Application.instance.windows[0].backendID, currentRenderPass);
         else Application.instance.gpu.beginRenderPass(@:privateAccess window.backendID, currentRenderPass);
     }
 
@@ -75,5 +75,5 @@ class Graphics {
         }
         
         Application.instance.gpu.drawIndexedPrimitives(currentIndexBufferLength, instances);
-    } 
+    }
 }

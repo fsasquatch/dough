@@ -17,7 +17,9 @@ class Application {
     public var gpu:Gpu;
     public var audio:Audio;
 
-    var mainWindow:Window;
+    public var windows:Array<Window>;
+    
+    // for the main window
     var width:Int;
     var height:Int;
     var title:String;
@@ -29,19 +31,25 @@ class Application {
         system = new System();
         gpu = new Gpu();
 
+        windows = [];
+
         width = w;
         height = h;
         title = t;
     }
 
     public function run() {
-        mainWindow = new Window(width, height, title);
+        windows[0] = new Window(width, height, title);
         if(onCreate != null) onCreate();
        
         #if !js
-        while(mainWindow.isRunning()) {
+        while(windows[0].isRunning()) {
             while(system.pollWindowEvents()) {
-                mainWindow.handleEvents();
+                for(w in windows) {
+                    if(!w.isRunning()) continue;
+                    w.handleEvents();
+                    if(system.wasWindowResized(@:privateAccess w.backendID)) if(w.onResize != null) w.onResize();
+                }
             }
 
             if(onUpdate != null) onUpdate();
@@ -50,12 +58,19 @@ class Application {
             dough.native.Dough.beginRender();
             if(onDraw != null) onDraw();
             dough.native.Dough.endRender();
+            #else
+            if(onDraw != null) onDraw();
             #end
+
+            for(i in 0...windows.length) {
+                if(i == 0) continue;
+                if(!windows[i].isRunning()) windows[i].destroy();
+            }
         }
         #else
         #end
 
         if(onDestroy != null) onDestroy();
-        mainWindow.destroy();
+        for(w in windows) w.destroy();
     }
 }

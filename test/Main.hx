@@ -1,3 +1,4 @@
+import dough.system.Window;
 import mathmath.linalg.*;
 import mathmath.MathMath;
 import dough.Application;
@@ -11,7 +12,7 @@ var texture:Texture;
 var sampler:Sampler;
 
 function main() {
-    var app = new Application(1280, 720, "Game");
+    var app = new Application(1280, 720, "Window");
     app.onCreate =  () -> {
         var vsInfo:ShaderInformation = {
             samplers: 0,
@@ -55,8 +56,11 @@ function main() {
 
         texture = new Texture("content/image.png");
         sampler = new Sampler();
-    };
 
+        app.windows[0].resizable = true;
+        app.windows[0].onResize = () -> trace(Date.now().getSeconds());
+        app.windows[1] = new Window(800, 600, "Window 2");
+    };
 
     var rotation = 0;
     app.onDraw = () -> {
@@ -66,8 +70,8 @@ function main() {
     
         var mat = view * model * projection;
 
-        Graphics.begin(0);
         Graphics.setClearColor(Color.BLACK);
+        Graphics.begin(0);
 
         Graphics.setVertexUniform(0, mat);
         Graphics.set(pipeline);
@@ -75,8 +79,21 @@ function main() {
         Graphics.set(indexBuffer);
         Graphics.set(texture, sampler);
         Graphics.draw();
-
         Graphics.end();
+
+        // always check if the secondary window is running
+        if(app.windows[1].isRunning()) {
+            Graphics.setClearColor(Color.RED);
+            Graphics.begin(0, app.windows[1]);
+
+            Graphics.setVertexUniform(0, mat);
+            Graphics.set(pipeline);
+            Graphics.set(vertexBuffer);
+            Graphics.set(indexBuffer);
+            Graphics.set(texture, sampler); 
+            Graphics.draw();
+            Graphics.end();
+        }
     }
 
     app.onDestroy = () -> {

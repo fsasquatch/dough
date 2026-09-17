@@ -146,6 +146,10 @@ class SDLSystem implements SystemApi {
         return Dough.setWindowResizable(window, resizable);
     }
 
+    public function wasWindowResized(window:Int):Bool {
+        return Dough.wasWindowResized(window);
+    }
+
     public function isWindowFocused(window:Int):Bool {
         return Dough.isWindowFocused(window);
     }

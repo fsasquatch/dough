@@ -111,6 +111,11 @@ HL_PRIM bool HL_NAME(set_window_resizable)(int window_id, bool resizable) {
 }
 DEFINE_PRIM(_BOOL, set_window_resizable, _I32 _BOOL);
 
+HL_PRIM bool HL_NAME(was_window_resized)(int window_id) {
+    return dh_was_window_resized(window_id);
+}
+DEFINE_PRIM(_BOOL, was_window_resized, _I32);
+
 HL_PRIM bool HL_NAME(is_window_focused)(int window_id) {
     return dh_is_window_focused(window_id);
 }

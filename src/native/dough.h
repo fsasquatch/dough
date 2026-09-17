@@ -29,6 +29,7 @@ bool dh_restore_window(int window_id);
 bool dh_raise_window(int window_id);
 bool dh_is_window_resizable(int window_id);
 bool dh_set_window_resizable(int window_id, bool resizable);
+bool dh_was_window_resized(int window_id);
 bool dh_is_window_focused(int window_id);
 bool dh_focus_window(int window_id);
 // bool dh_set_window_icon();

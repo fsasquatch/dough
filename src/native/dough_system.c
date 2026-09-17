@@ -188,6 +188,10 @@ bool dh_set_window_resizable(int window_id, bool resizable) {
     return SDL_SetWindowResizable(dh_app.windows[window_id].sdl_window, resizable);
 }
 
+bool dh_was_window_resized(int window_id) {
+    return dh_app.windows[window_id].was_resized;
+}
+
 bool dh_is_window_focused(int window_id) {
     return dh_app.windows[window_id].is_focused;
 }
@@ -232,7 +236,7 @@ void dh_handle_window_events(int window_id) {
                 dh_app.current_mouse_x = dh_app.event.motion.x;
                 dh_app.current_mouse_y = dh_app.event.motion.y;
             case SDL_EVENT_WINDOW_RESIZED:
-                dh_app.windows[window_id].was_resized = true;
+                if(dh_app.event.window.data1 > 0 || dh_app.event.window.data2 > 0) dh_app.windows[window_id].was_resized = true;
             case SDL_EVENT_WINDOW_FOCUS_GAINED:
                 dh_app.windows[window_id].is_focused = true;
             case SDL_EVENT_WINDOW_FOCUS_LOST:

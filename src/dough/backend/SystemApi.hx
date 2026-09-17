@@ -23,6 +23,7 @@ interface SystemApi {
     public function raiseWindow(window:Int):Bool;
     public function isWindowResizable(window:Int):Bool;
     public function setWindowResizable(window:Int, resizable:Bool):Bool;
+    public function wasWindowResized(window:Int):Bool;
     public function isWindowFocused(window:Int):Bool;
     public function focusWindow(window:Int):Bool;
     public function pollWindowEvents():Bool;

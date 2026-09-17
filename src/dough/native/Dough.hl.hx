@@ -32,6 +32,7 @@ extern class Dough {
     static function raiseWindow(window:Int):Bool;
     static function isWindowResizable(window:Int):Bool;
     static function setWindowResizable(window:Int, resizable:Bool):Bool;
+    static function wasWindowResized(window:Int):Bool;
     static function isWindowFocused(window:Int):Bool;
     static function focusWindow(window:Int):Bool;
     static function pollWindowEvents():Bool;
