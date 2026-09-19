@@ -1,5 +1,7 @@
-package dough.backend.web;
+package dough.backend.system;
 
+import haxe.io.Bytes;
+import js.html.XMLHttpRequest;
 import js.Browser;
 import js.html.webgl.WebGL2RenderingContext;
 import js.html.CanvasElement;

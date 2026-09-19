@@ -1,7 +1,7 @@
 package dough.backend;
 
-#if hl
-typedef System = dough.backend.sdl.SDLSystem;
+#if (hl || cpp)
+typedef System = dough.backend.system.SDLSystem;
 #else
-typedef System = dough.backend.web.WebSystem;
+typedef System = dough.backend.system.WebSystem;
 #end

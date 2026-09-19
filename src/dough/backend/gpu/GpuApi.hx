@@ -1,4 +1,4 @@
-package dough.backend;
+package dough.backend.gpu;
 
 import haxe.io.Bytes;
 import dough.graphics.*;

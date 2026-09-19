@@ -59,6 +59,9 @@ function main() {
 
         app.windows[0].resizable = true;
         app.windows[1] = new Window(800, 600, "Window 2");
+
+        var v  = new Vector3();
+        v.x;
     };
 
     var rotation = 0;

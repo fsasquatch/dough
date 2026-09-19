@@ -1,7 +1,7 @@
 package dough.backend;
 
-#if hl
-typedef Gpu = dough.backend.sdl.SDLGpu;
+#if (hl || cpp)
+typedef Gpu = dough.backend.gpu.SDLGpu;
 #elseif js
-typedef Gpu = dough.backend.web.WebGL;
+typedef Gpu = dough.backend.gpu.WebGL;
 #end

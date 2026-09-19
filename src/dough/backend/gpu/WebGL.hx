@@ -1,4 +1,4 @@
-package dough.backend.web;
+package dough.backend.gpu;
 
 import js.html.Image;
 import js.html.ImageData;
@@ -12,8 +12,6 @@ import haxe.io.Float32Array;
 import dough.graphics.*;
 import js.html.webgl.WebGL2RenderingContext;
 
-// contrary to the name this does not use WebGPU
-// this uses WebGL instead
 class WebGL implements GpuApi {
     var gl:WebGL2RenderingContext;
 

@@ -1,4 +1,4 @@
-package dough.backend.sdl;
+package dough.backend.gpu;
 
 import haxe.io.UInt16Array;
 import haxe.io.Bytes;

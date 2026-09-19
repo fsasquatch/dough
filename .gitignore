@@ -1,5 +1,6 @@
 build
 .cache
+test/build
 test/out.hl
 test/*.hdll
 test/content

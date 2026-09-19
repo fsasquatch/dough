@@ -1,4 +1,4 @@
-package dough.backend;
+package dough.backend.system;
 
 interface SystemApi {
     public function createWindow(width:Int, height:Int, title:String):Int;

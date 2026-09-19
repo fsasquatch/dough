@@ -1,4 +1,4 @@
-package dough.backend.sdl;
+package dough.backend.system;
 
 import dough.system.Keys;
 import sys.FileSystem;
