@@ -255,6 +255,10 @@ void dh_show_cursor() {
     SDL_ShowCursor();
 }
 
+void dh_hide_cursor() {
+    SDL_HideCursor();
+}
+
 void dh_lock_cursor(int window_id) {
     SDL_SetWindowMouseGrab(dh_app.windows[window_id].sdl_window, true);
 }

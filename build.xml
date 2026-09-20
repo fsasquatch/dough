@@ -2,31 +2,28 @@
     <pragma once="true"/>
 
     <set name="dough_include" value="${haxelib:dough}/src/native"/>
-    <set name="sdl3_path" value="${haxelib:dough}/libs"/>
-    <set name="sdl3_include" value="${sdl3_path}/SDL/include"/>
+    <set name="lib_path" value="${haxelib:dough}/libs"/>
     <set name="sdl3_lib" value="${haxelib:dough}/build/libs/SDL"/>
 
     <section>
         <files id="haxe">
-            <compilerflag value="-I${sdl3_include}"/>
+            <compilerflag value="-I${lib_path}/SDL/include"/>
+            <compilerflag value="-I${lib_path}/stb"/>
             <compilerflag value="-I${dough_include}"/>
+
+            <file name="${haxelib:dough}/src/native/dough_system.c" />
+            <file name="${haxelib:dough}/src/native/dough_gpu.c" />
+            <file name="${haxelib:dough}/src/native/dough_utils.c" />
         </files>
 
         <files id="__main__">
-            <compilerflag value="-I${dough_include}"/>
-            <compilerflag value="-I${sdl3_include}"/>
-        </files>
-
-        <files id="__lib__">
-            <compilerflag value="-I${sdl3_include}"/>
+            <compilerflag value="-I${lib_path}/SDL/include"/>
+            <compilerflag value="-I${lib_path}/stb"/>
             <compilerflag value="-I${dough_include}"/>
         </files>
 
         <target id="haxe" tool="linker" toolid="exe" if="windows">
-            <compilerflag value="-I${sdl3_include}"/>
-            <compilerflag value="-I${dough_include}"/>
-
-            <lib name="${sdl3_lib}/SDL3.dll"/>
+            <lib name="${sdl3_lib}/SDL3.lib"/>
 
             <lib name="winmm.lib"/>
             <lib name="gdi32.lib"/>
@@ -42,9 +39,6 @@
         </target>
 
         <target id="haxe" if="linux">
-            <compilerflag value="-I${sdl3_include}"/>
-            <compilerflag value="-I${dough_include}"/>
-
             <lib name="-L${sdl3_lib}"/>
             <lib name="-lSDL3"/>
 

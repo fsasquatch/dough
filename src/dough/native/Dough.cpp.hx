@@ -8,27 +8,31 @@ typedef NativeBuffer = cpp.RawPointer<_NativeBuffer>;
 
 @:include('dough_internal.h')
 @:native('SDL_GPUGraphicsPipeline')
+@:structAccess
 extern class _NativeGraphicsPipeline {
 }
 typedef NativeGraphicsPipeline = cpp.RawPointer<_NativeGraphicsPipeline>;
 
 @:include('dough_internal.h')
 @:native('SDL_GPUShader')
+@:structAccess
 extern class _NativeShader{
 }
-typedef NativeShader = cpp.RawPointer<_NativeShader>;
+typedef NativeShader = cpp.Struct<cpp.RawPointer<_NativeShader>>;
 
 @:include('dough_internal.h')
 @:native('SDL_GPUSampler')
+@:structAccess
 extern class _NativeSampler {
 }
-typedef NativeSampler = cpp.RawPointer<_NativeSampler>;
+typedef NativeSampler = cpp.Struct<cpp.RawPointer<_NativeSampler>>;
 
 @:include('dough_internal.h')
 @:native('SDL_GPUTexture')
+@:structAccess
 extern class _NativeTexture {
 }
-typedef NativeTexture = cpp.RawPointer<_NativeTexture>;
+typedef NativeTexture = cpp.Struct<cpp.RawPointer<_NativeTexture>>;
 
 @:buildXml("<include name='${haxelib:dough}/build.xml' />")
 @:include('dough.h')
@@ -48,7 +52,7 @@ extern class Dough {
     @:native("dh_is_window_fullscreen") static function isWindowFullscreen(window:Int):Bool;
     @:native("dh_toggle_fullscreen") static function toggleFullscreen(window:Int, borderless:Bool):Bool;
     @:native("dh_is_window_minimized") static function isWindowMinimized(window:Int):Bool;
-    @:native("dh_minimized_window") static function minimizeWindow(window:Int):Bool;
+    @:native("dh_minimize_window") static function minimizeWindow(window:Int):Bool;
     @:native("dh_is_window_maximized") static function isWindowMaximized(window:Int):Bool;
     @:native("dh_maximize_window") static function maximizeWindow(window:Int):Bool;
     @:native("dh_restore_window") static function restoreWindow(window:Int):Bool;

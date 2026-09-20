@@ -7,6 +7,10 @@
 #ifndef DOUGH_H
 #define DOUGH_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 int dh_create_window(int width, int height, const char* title, bool debug);
 void dh_destroy_window(int window_id);
 bool dh_is_window_running(int window_id);
@@ -112,5 +116,9 @@ void dh_set_fragment_sampler(SDL_GPUTexture* texture, SDL_GPUSampler* sampler);
 
 void dh_draw_primitives(int vertices, int instances);
 void dh_draw_indexed_primitives(int indices, int instances);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
