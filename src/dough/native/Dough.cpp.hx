@@ -40,6 +40,7 @@ extern class Dough {
     @:native("dh_create_window") static function createWindow(width:Int, height:Int, title:String, debug:Bool):Int;
     @:native("dh_destroy_window") static function destroyWindow(window:Int):Void;
     @:native("dh_is_window_running") static function isWindowRunning(window:Int):Bool;
+    @:native("dh_set_window_running") static function setWindowRunning(window:Int, running:Bool):Void;
     @:native("dh_get_window_width") static function getWindowWidth(window:Int):Int;
     @:native("dh_get_window_height") static function getWindowHeight(window:Int):Int;
     @:native("dh_set_window_size") static function setWindowSize(window:Int, w:Int, h:Int):Bool;
@@ -64,6 +65,7 @@ extern class Dough {
     @:native("dh_focus_window") static function focusWindow(window:Int):Bool;
     @:native("dh_poll_window_events") static function pollWindowEvents():Bool;
     @:native("dh_handle_window_events") static function handleWindowEvents(window:Int):Void;
+    @:native("dh_handle_input_events") static function handleInputEvents():Void;
     @:native("dh_set_fps_cap") static function setFpsCap(fps:Int):Void;
     @:native("dh_enable_fps_cap") static function enableFpsCap():Void;
     @:native("dh_disable_fps_cap") static function disableFpsCap():Void;

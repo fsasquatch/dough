@@ -47,13 +47,14 @@ class Application {
         if(onCreate != null) onCreate();
        
         #if !js
-        while(windows[0].isRunning()) {
+        while(windows[0].isRunning) {
             while(system.pollWindowEvents()) {
                 for(w in windows) {
-                    if(!w.isRunning()) continue;
+                    if(!w.isRunning) continue;
                     w.handleEvents();
                     if(system.wasWindowResized(@:privateAccess w.backendID)) if(w.onResize != null) w.onResize();
                 }
+                system.handleInputEvents();
             }
 
             if(onUpdate != null) onUpdate();
@@ -64,7 +65,7 @@ class Application {
 
             for(i in 0...windows.length) {
                 if(i == 0) continue;
-                if(!windows[i].isRunning()) windows[i].destroy();
+                if(!windows[i].isRunning) windows[i].destroy();
             }
         }
         #else

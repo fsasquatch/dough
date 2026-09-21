@@ -16,6 +16,11 @@ HL_PRIM bool HL_NAME(is_window_running)(int window_id) {
 }
 DEFINE_PRIM(_BOOL, is_window_running, _I32);
 
+HL_PRIM void HL_NAME(set_window_running)(int window_id, bool running) {
+    dh_set_window_running(window_id, running);
+}
+DEFINE_PRIM(_VOID, set_window_running, _I32 _I32);
+
 HL_PRIM int HL_NAME(get_window_width)(int window_id) {
     return dh_get_window_width(window_id);
 }
@@ -135,6 +140,11 @@ HL_PRIM void HL_NAME(handle_window_events)(int window_id) {
     dh_handle_window_events(window_id);
 }
 DEFINE_PRIM(_VOID, handle_window_events, _I32);
+
+HL_PRIM void HL_NAME(handle_input_events)() {
+    dh_handle_input_events();
+}
+DEFINE_PRIM(_VOID, handle_input_events, _NO_ARG);
 
 HL_PRIM void HL_NAME(set_fps_cap)(int fps) {
     dh_set_fps_cap(fps);

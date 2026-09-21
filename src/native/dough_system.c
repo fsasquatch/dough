@@ -1,3 +1,4 @@
+#include "SDL3/SDL_events.h"
 #include "SDL3/SDL_gpu.h"
 #include "dough_internal.h"
 
@@ -96,6 +97,10 @@ void dh_destroy_window(int window_id) {
 
 bool dh_is_window_running(int window_id) {
     return dh_app.windows[window_id].is_running;
+}
+
+void dh_set_window_running(int window_id, bool running) {
+    dh_app.windows[window_id].is_running = running;
 }
 
 int dh_get_window_width(int window_id) {
@@ -209,29 +214,13 @@ bool dh_poll_window_events() {
 
 void dh_handle_window_events(int window_id) {
     dh_app.windows[window_id].was_resized = false;
-    for(int i = 0; i <= 512; i++) dh_app.previous_key_state[i] = dh_app.current_key_state[i]; 
-    for(int i = 0; i <= 4; i++) dh_app.previous_mouse_state[i] = dh_app.current_mouse_state[i]; 
-
+    
     if(dh_app.event.window.windowID == dh_app.windows[window_id].sdl_window_id) {
         switch(dh_app.event.type) {
             case SDL_EVENT_QUIT:
                 dh_app.exit = true;
             case SDL_EVENT_WINDOW_CLOSE_REQUESTED:
                 dh_app.windows[window_id].is_running = false;
-            case SDL_EVENT_KEY_DOWN:
-                dh_app.current_key_state[dh_app.event.key.scancode] = true;
-            case SDL_EVENT_KEY_UP:
-                dh_app.current_key_state[dh_app.event.key.scancode] = false;
-            case SDL_EVENT_MOUSE_BUTTON_DOWN:
-                dh_app.current_mouse_state[dh_app.event.button.button] = true;
-            case SDL_EVENT_MOUSE_BUTTON_UP:
-                dh_app.current_mouse_state[dh_app.event.button.button] = false;
-            case SDL_EVENT_MOUSE_WHEEL:
-                dh_app.current_mouse_wheel_delta_x = dh_app.event.wheel.x;
-                dh_app.current_mouse_wheel_delta_y = dh_app.event.wheel.y;
-            case SDL_EVENT_MOUSE_MOTION:
-                dh_app.current_mouse_x = dh_app.event.motion.x;
-                dh_app.current_mouse_y = dh_app.event.motion.y;
             case SDL_EVENT_WINDOW_RESIZED:
                 if(dh_app.event.window.data1 > 0 || dh_app.event.window.data2 > 0) dh_app.windows[window_id].was_resized = true;
             case SDL_EVENT_WINDOW_FOCUS_GAINED:
@@ -241,7 +230,35 @@ void dh_handle_window_events(int window_id) {
             default:
                 break;
         }
-    } 
+    }
+}
+
+void dh_handle_input_events() {
+    for(int i = 0; i <= 512; i++) dh_app.previous_key_state[i] = dh_app.current_key_state[i]; 
+    for(int i = 0; i <= 4; i++) dh_app.previous_mouse_state[i] = dh_app.current_mouse_state[i]; 
+
+    switch(dh_app.event.type) {
+        case SDL_EVENT_KEY_DOWN:
+            dh_app.current_key_state[dh_app.event.key.scancode] = true;
+            break;
+        case SDL_EVENT_KEY_UP:
+            dh_app.current_key_state[dh_app.event.key.scancode] = false;
+            break;
+        case SDL_EVENT_MOUSE_BUTTON_DOWN:
+            dh_app.current_mouse_state[dh_app.event.button.button] = true;
+            break;
+        case SDL_EVENT_MOUSE_BUTTON_UP:
+            dh_app.current_mouse_state[dh_app.event.button.button] = false;
+            break;
+        case SDL_EVENT_MOUSE_WHEEL:
+            dh_app.current_mouse_wheel_delta_x = dh_app.event.wheel.x;
+            dh_app.current_mouse_wheel_delta_y = dh_app.event.wheel.y;
+            break;
+        case SDL_EVENT_MOUSE_MOTION:
+            dh_app.current_mouse_x = dh_app.event.motion.x;
+            dh_app.current_mouse_y = dh_app.event.motion.y;
+            break;
+    }
 }
 
 void dh_set_fps_cap(int fps) {

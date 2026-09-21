@@ -5,6 +5,8 @@ class Window {
     public var height(get, set):Int;
     public var title:String;
 
+    public var isRunning(get, set):Bool;
+
     public var currentDisplay(get, null):Int;
     
     public var x(get, set):Int;
@@ -33,8 +35,13 @@ class Window {
         Application.instance.system.destroyWindow(backendID);
     }
 
-    public function isRunning():Bool {
+    function get_isRunning():Bool {
         return Application.instance.system.isWindowRunning(backendID);
+    }
+
+    function set_isRunning(value:Bool) {
+        Application.instance.system.setWindowRunning(backendID, value);
+        return isRunning;
     }
 
     public function handleEvents() {

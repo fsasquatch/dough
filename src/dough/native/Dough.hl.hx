@@ -13,6 +13,7 @@ extern class Dough {
     static function createWindow(width:Int, height:Int, title:String, debug:Bool):Int;
     static function destroyWindow(window:Int):Void;
     static function isWindowRunning(window:Int):Bool;
+    static function setWindowRunning(window:Int, running:Bool):Void;
     static function getWindowWidth(window:Int):Int;
     static function getWindowHeight(window:Int):Int;
     static function setWindowSize(window:Int, w:Int, h:Int):Bool;
@@ -37,6 +38,7 @@ extern class Dough {
     static function focusWindow(window:Int):Bool;
     static function pollWindowEvents():Bool;
     static function handleWindowEvents(window:Int):Void;
+    static function handleInputEvents():Void;
     static function setFpsCap(fps:Int):Void;
     static function enableFpsCap():Void;
     static function disableFpsCap():Void;

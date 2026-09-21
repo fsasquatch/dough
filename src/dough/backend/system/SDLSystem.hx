@@ -11,55 +11,55 @@ class SDLSystem implements SystemApi {
     public function new() {}
 
     public function createWindow(width:Int, height:Int, title:String):Int {
+        setupKeys();
         #if debug
         return Dough.createWindow(width, height, title, true);
         #else
         return Dough.createWindow(width, height, title, false);
         #end
-        setupKeys();
-        return 0;
+        return -1;
     }
     
     function setupKeys() {
         for(i in 4...39) scancodeKeyMap.set(i-3, i);
-        scancodeKeyMap.set(40, ENTER);
-        scancodeKeyMap.set(41, ESCAPE);
-        scancodeKeyMap.set(42, BACKSPACE);
-        scancodeKeyMap.set(43, TAB);
-        scancodeKeyMap.set(44, SPACE);
-        scancodeKeyMap.set(45, MINUS);
-        scancodeKeyMap.set(46, EQUALS);
-        scancodeKeyMap.set(47, LEFT_BRACKET);
-        scancodeKeyMap.set(48, RIGHT_BRACKET);
-        scancodeKeyMap.set(49, BACKSLASH);
-        scancodeKeyMap.set(51, SEMICOLON);
-        scancodeKeyMap.set(52, APOSTROPHE);
-        scancodeKeyMap.set(53, GRAVE);
-        scancodeKeyMap.set(54, COMMA);
-        scancodeKeyMap.set(55, PERIOD);
-        scancodeKeyMap.set(56, SLASH);
-        scancodeKeyMap.set(58, F1);
-        scancodeKeyMap.set(59, F2);
-        scancodeKeyMap.set(60, F3);
-        scancodeKeyMap.set(61, F4);
-        scancodeKeyMap.set(62, F5);
-        scancodeKeyMap.set(63, F6);
-        scancodeKeyMap.set(64, F7);
-        scancodeKeyMap.set(65, F8);
-        scancodeKeyMap.set(66, F9);
-        scancodeKeyMap.set(67, F10);
-        scancodeKeyMap.set(68, F11);
-        scancodeKeyMap.set(69, F12);
-        scancodeKeyMap.set(79, RIGHT);
-        scancodeKeyMap.set(80, LEFT);
-        scancodeKeyMap.set(81, DOWN);
-        scancodeKeyMap.set(82, UP);
-        scancodeKeyMap.set(224, LEFT_CTRL);
-        scancodeKeyMap.set(225, LEFT_SHIFT);
-        scancodeKeyMap.set(226, LEFT_ALT);
-        scancodeKeyMap.set(228, RIGHT_CTRL);
-        scancodeKeyMap.set(229, RIGHT_SHIFT);
-        scancodeKeyMap.set(230, RIGHT_ALT);
+        scancodeKeyMap.set(ENTER, 40);
+        scancodeKeyMap.set(ESCAPE, 41);
+        scancodeKeyMap.set(BACKSPACE, 42);
+        scancodeKeyMap.set(TAB, 43);
+        scancodeKeyMap.set(SPACE, 44);
+        scancodeKeyMap.set(MINUS, 45);
+        scancodeKeyMap.set(EQUALS, 46);
+        scancodeKeyMap.set(LEFT_BRACKET, 47);
+        scancodeKeyMap.set(RIGHT_BRACKET, 48);
+        scancodeKeyMap.set(BACKSLASH, 49);
+        scancodeKeyMap.set(SEMICOLON, 51);
+        scancodeKeyMap.set(APOSTROPHE, 52);
+        scancodeKeyMap.set(GRAVE, 53);
+        scancodeKeyMap.set(COMMA, 54);
+        scancodeKeyMap.set(PERIOD, 55);
+        scancodeKeyMap.set(SLASH, 56);
+        scancodeKeyMap.set(F1, 58);
+        scancodeKeyMap.set(F2, 59);
+        scancodeKeyMap.set(F3, 60);
+        scancodeKeyMap.set(F4, 61);
+        scancodeKeyMap.set(F5, 62);
+        scancodeKeyMap.set(F6, 63);
+        scancodeKeyMap.set(F7, 64);
+        scancodeKeyMap.set(F8, 65);
+        scancodeKeyMap.set(F9, 66);
+        scancodeKeyMap.set(F10, 67);
+        scancodeKeyMap.set(F11, 68);
+        scancodeKeyMap.set(F12, 69);
+        scancodeKeyMap.set(RIGHT, 79);
+        scancodeKeyMap.set(LEFT, 80);
+        scancodeKeyMap.set(DOWN, 81);
+        scancodeKeyMap.set(UP, 82);
+        scancodeKeyMap.set(LEFT_CTRL, 224);
+        scancodeKeyMap.set(LEFT_SHIFT, 225);
+        scancodeKeyMap.set(LEFT_ALT, 226);
+        scancodeKeyMap.set(RIGHT_CTRL, 228);
+        scancodeKeyMap.set(RIGHT_SHIFT, 229);
+        scancodeKeyMap.set(RIGHT_ALT, 230);
     }
 
     public function destroyWindow(window:Int) {
@@ -68,6 +68,10 @@ class SDLSystem implements SystemApi {
 
     public function isWindowRunning(window:Int):Bool {
         return Dough.isWindowRunning(window);
+    }
+
+    public function setWindowRunning(window:Int, running:Bool) {
+        Dough.setWindowRunning(window, running);
     }
 
     public function getWindowWidth(window:Int):Int {
@@ -164,6 +168,10 @@ class SDLSystem implements SystemApi {
 
     public function handleWindowEvents(window:Int){
         Dough.handleWindowEvents(window);
+    }
+
+    public function handleInputEvents() {
+        Dough.handleInputEvents();
     }
 
     public function setFpsCap(fps:Int) {

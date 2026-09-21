@@ -4,6 +4,7 @@ interface SystemApi {
     public function createWindow(width:Int, height:Int, title:String):Int;
     public function destroyWindow(window:Int):Void;
     public function isWindowRunning(window:Int):Bool;
+    public function setWindowRunning(window:Int, running:Bool):Void;
     public function getWindowWidth(window:Int):Int;
     public function getWindowHeight(window:Int):Int;
     public function setWindowSize(window:Int, w:Int, h:Int):Bool;
@@ -28,6 +29,7 @@ interface SystemApi {
     public function focusWindow(window:Int):Bool;
     public function pollWindowEvents():Bool;
     public function handleWindowEvents(window:Int):Void;
+    public function handleInputEvents():Void;
     public function setFpsCap(fps:Int):Void;
     public function enableFpsCap():Void;
     public function disableFpsCap():Void;

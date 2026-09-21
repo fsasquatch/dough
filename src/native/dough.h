@@ -14,6 +14,7 @@ extern "C" {
 int dh_create_window(int width, int height, const char* title, bool debug);
 void dh_destroy_window(int window_id);
 bool dh_is_window_running(int window_id);
+void dh_set_window_running(int window_id, bool running);
 int dh_get_window_width(int window_id);
 int dh_get_window_height(int window_id);
 bool dh_set_window_size(int window_id, int width, int height);
@@ -39,6 +40,7 @@ bool dh_focus_window(int window_id);
 // bool dh_set_window_icon();
 bool dh_poll_window_events();
 void dh_handle_window_events(int window_id);
+void dh_handle_input_events();
 void dh_set_fps_cap(int fps);
 void dh_enable_fps_cap();
 void dh_disable_fps_cap();

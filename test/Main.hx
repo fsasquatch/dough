@@ -1,3 +1,4 @@
+import dough.system.Keyboard;
 import dough.system.Window;
 import mathmath.linalg.*;
 import mathmath.MathMath;
@@ -64,11 +65,17 @@ function main() {
         v.x;
     };
 
+    app.onUpdate = () -> {
+        if(Keyboard.isKeyJustDown(ESCAPE)) app.windows[0].isRunning = false; 
+    };
+
     var rotation = 0;
     app.onDraw = () -> {
-        var model = Matrix4x4.matrixCompose(new Vector3(0, 0, -2), Quaternion.fromAxisAngle(new Vector3(0, 0, 1), MathMath.degreesToRadians(rotation)), new Vector3(1, 1, 1));
+        rotation++;
+        var model = Matrix4x4.matrixCompose(new Vector3(10, 10, 0), Quaternion.fromAxisAngle(new Vector3(0, 0, 1), MathMath.degreesToRadians(rotation)), new Vector3(1, 1, 1));
         var view = Matrix4x4.lookAt(new Vector3(0, 0, 2), new Vector3(0, 0, -2), new Vector3(0, 1, 0));
-        var projection = Matrix4x4.perspectiveNO(MathMath.degreesToRadians(70), 1280 / 720, 0.0001, 10000);
+        var projection = Matrix4x4.perspectiveZO(MathMath.degreesToRadians(70), 1280 / 720, 0.0001, 10000);
+        //var projection = Matrix4x4.orthoZO(0, 1280, 720, 0, 0, 1.0);
     
         var mat = view * model * projection;
 
@@ -84,7 +91,7 @@ function main() {
         Graphics.end();
 
         // always check if the secondary window is running
-        if(app.windows[1].isRunning()) {
+        if(app.windows[1].isRunning) {
             Graphics.setClearColor(Color.RED);
             Graphics.begin(0, app.windows[1]);
 
