@@ -1,3 +1,4 @@
+#include "SDL3/SDL_gpu.h"
 #include "dough_internal.h"
 
 // Multiple windows? 
@@ -58,6 +59,7 @@ int dh_create_window(int width, int height, const char* title, bool debug) {
 
     // TODO: Implement switching between SDR, SDR_LINEAR, HDR
     SDL_GPUPresentMode presentMode = SDL_WindowSupportsGPUPresentMode(dh_app.gpu_device, window.sdl_window, SDL_GPU_PRESENTMODE_MAILBOX) ? SDL_GPU_PRESENTMODE_MAILBOX : SDL_GPU_PRESENTMODE_VSYNC;
+    //SDL_GPUPresentMode presentMode = SDL_GPU_PRESENTMODE_VSYNC;
     SDL_SetGPUSwapchainParameters(dh_app.gpu_device, window.sdl_window, SDL_GPU_SWAPCHAINCOMPOSITION_SDR, presentMode);
 
     dh_app.last_ticks = SDL_GetTicks(); // Does this need to be here?
@@ -201,12 +203,7 @@ bool dh_focus_window(int window_id) {
     return true;
 }
 
-// TODO: Is there anything wrong with these two functions?
-// IDK
 bool dh_poll_window_events() {
-    dh_app.new_ticks = SDL_GetTicks();
-    dh_app.frame_time = ((double)(dh_app.new_ticks - dh_app.last_ticks)) / 1000;
-    dh_app.last_ticks = dh_app.new_ticks;
     return SDL_PollEvent(&dh_app.event);
 }
 
@@ -245,6 +242,22 @@ void dh_handle_window_events(int window_id) {
                 break;
         }
     } 
+}
+
+void dh_set_fps_cap(int fps) {
+    dh_app.window_fps_cap = fps;
+}
+
+void dh_enable_fps_cap() {
+    dh_app.is_fps_capped = true;
+}
+
+void dh_disable_fps_cap() {
+    dh_app.is_fps_capped = false;
+}
+
+bool dh_is_fps_capped() {
+    return dh_app.is_fps_capped;
 }
 
 bool dh_is_cursor_shown() {

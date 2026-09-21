@@ -35,6 +35,8 @@ typedef struct dh_internal_application {
     Uint64 last_ticks;
     Uint64 new_ticks;
     double frame_time;
+    int window_fps_cap;
+    bool is_fps_capped;
 
     bool current_key_state[512];
     bool previous_key_state[512];
@@ -46,6 +48,7 @@ typedef struct dh_internal_application {
     float current_mouse_wheel_delta_x;
     float current_mouse_wheel_delta_y;
 
+    
     SDL_Event event;
     
     bool gpu_device_created;

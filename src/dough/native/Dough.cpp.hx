@@ -64,6 +64,10 @@ extern class Dough {
     @:native("dh_focus_window") static function focusWindow(window:Int):Bool;
     @:native("dh_poll_window_events") static function pollWindowEvents():Bool;
     @:native("dh_handle_window_events") static function handleWindowEvents(window:Int):Void;
+    @:native("dh_set_fps_cap") static function setFpsCap(fps:Int):Void;
+    @:native("dh_enable_fps_cap") static function enableFpsCap():Void;
+    @:native("dh_disable_fps_cap") static function disableFpsCap():Void;
+    @:native("dh_is_fps_capped") static function isFpsCapped():Bool;
 
     @:native("dh_is_cursor_shown") static function isCursorShown():Bool;
     @:native("dh_show_cursor") static function showCursor():Void;

@@ -39,6 +39,10 @@ bool dh_focus_window(int window_id);
 // bool dh_set_window_icon();
 bool dh_poll_window_events();
 void dh_handle_window_events(int window_id);
+void dh_set_fps_cap(int fps);
+void dh_enable_fps_cap();
+void dh_disable_fps_cap();
+bool dh_is_fps_capped();
 
 bool dh_is_cursor_shown();
 void dh_show_cursor();

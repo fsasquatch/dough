@@ -1,5 +1,7 @@
 // TODO: Error checks everywhere!
 
+#include "SDL3/SDL_stdinc.h"
+#include "SDL3/SDL_timer.h"
 #include "dough_internal.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -8,8 +10,16 @@ extern dh_internal_application dh_app;
 int vertex_data_size = 0;
 SDL_FColor clear_color = {0, 0, 0, 1};
 bool copy_pass_active = false;
+Uint64 rendering_time_start;
+Uint64 rendering_time_end;
 
 void dh_begin_render() {
+    // temporarily here :)
+    dh_app.new_ticks = SDL_GetTicks();
+    dh_app.frame_time = ((double)(dh_app.new_ticks - dh_app.last_ticks)) / 1000;
+    dh_app.last_ticks = dh_app.new_ticks;
+
+    rendering_time_start = SDL_GetTicksNS();
     dh_app.command_buffer = SDL_AcquireGPUCommandBuffer(dh_app.gpu_device);
     if(dh_app.command_buffer == NULL) {
         SDL_Log("Failed to acquire command buffer: %s", SDL_GetError());
@@ -18,6 +28,17 @@ void dh_begin_render() {
 
 void dh_end_render() {
     SDL_SubmitGPUCommandBuffer(dh_app.command_buffer);
+
+    // this is soooo stupid
+    rendering_time_end = SDL_GetTicksNS();
+    Uint64 diff = rendering_time_end - rendering_time_start;
+    const Uint64 fps_cap = 1000000000 / dh_app.window_fps_cap;
+    if(dh_app.is_fps_capped && diff < fps_cap) {
+        Uint64 sleep_time = fps_cap - diff;
+        SDL_DelayNS(sleep_time);
+
+        diff = SDL_GetTicksNS();
+    }
 }
 
 void dh_set_clear_color(float r, float g, float b, float a) {

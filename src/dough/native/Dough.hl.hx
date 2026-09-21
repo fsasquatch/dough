@@ -37,6 +37,10 @@ extern class Dough {
     static function focusWindow(window:Int):Bool;
     static function pollWindowEvents():Bool;
     static function handleWindowEvents(window:Int):Void;
+    static function setFpsCap(fps:Int):Void;
+    static function enableFpsCap():Void;
+    static function disableFpsCap():Void;
+    static function isFpsCapped():Bool;
 
     static function isCursorShown():Bool;
     static function showCursor():Void;

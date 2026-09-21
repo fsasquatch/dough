@@ -166,6 +166,22 @@ class SDLSystem implements SystemApi {
         Dough.handleWindowEvents(window);
     }
 
+    public function setFpsCap(fps:Int) {
+        Dough.setFpsCap(fps);
+    }
+
+    public function enableFpsCap() {
+        Dough.enableFpsCap();
+    }
+
+    public function disableFpsCap() {
+        Dough.disableFpsCap();
+    }
+
+    public function isFpsCapped():Bool {
+        return Dough.isFpsCapped();
+    }
+
     public function showCursor() {
         Dough.showCursor();
     }

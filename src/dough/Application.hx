@@ -23,8 +23,9 @@ class Application {
     var width:Int;
     var height:Int;
     var title:String;
+    var fps:Int = 60;
 
-    public function new(w:Int, h:Int, t:String) {
+    public function new(w:Int, h:Int, t:String, fps:Int = 60) {
         if(instance != null) trace("This might crash and burn");
         else instance = this;
 
@@ -36,10 +37,13 @@ class Application {
         width = w;
         height = h;
         title = t;
+        this.fps = fps;
     }
 
     public function run() {
         windows[0] = new Window(width, height, title);
+        system.setFpsCap(fps);
+        system.enableFpsCap();
         if(onCreate != null) onCreate();
        
         #if !js
@@ -54,13 +58,9 @@ class Application {
 
             if(onUpdate != null) onUpdate();
 
-            #if !opengl
-            dough.native.Dough.beginRender();
+            gpu.beginRender();
             if(onDraw != null) onDraw();
-            dough.native.Dough.endRender();
-            #else
-            if(onDraw != null) onDraw();
-            #end
+            gpu.endRender();
 
             for(i in 0...windows.length) {
                 if(i == 0) continue;

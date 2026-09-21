@@ -28,6 +28,10 @@ interface SystemApi {
     public function focusWindow(window:Int):Bool;
     public function pollWindowEvents():Bool;
     public function handleWindowEvents(window:Int):Void;
+    public function setFpsCap(fps:Int):Void;
+    public function enableFpsCap():Void;
+    public function disableFpsCap():Void;
+    public function isFpsCapped():Bool;
 
     public function showCursor():Void;
     public function hideCursor():Void;

@@ -136,6 +136,26 @@ HL_PRIM void HL_NAME(handle_window_events)(int window_id) {
 }
 DEFINE_PRIM(_VOID, handle_window_events, _I32);
 
+HL_PRIM void HL_NAME(set_fps_cap)(int fps) {
+    dh_set_fps_cap(fps);
+}
+DEFINE_PRIM(_VOID, set_fps_cap, _I32);
+
+HL_PRIM void HL_NAME(enable_fps_cap)() {
+    dh_enable_fps_cap();
+}
+DEFINE_PRIM(_VOID, enable_fps_cap, _NO_ARG);
+
+HL_PRIM void HL_NAME(disable_fps_cap)() {
+    dh_disable_fps_cap();
+}
+DEFINE_PRIM(_VOID, disable_fps_cap, _NO_ARG);
+
+HL_PRIM bool HL_NAME(is_fps_capped)() {
+    return dh_is_fps_capped(); 
+}
+DEFINE_PRIM(_VOID, is_fps_capped, _NO_ARG);
+
 HL_PRIM bool HL_NAME(is_cursor_shown)() {
     return dh_is_cursor_shown();
 }
