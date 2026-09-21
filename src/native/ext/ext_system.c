@@ -154,7 +154,7 @@ DEFINE_PRIM(_VOID, disable_fps_cap, _NO_ARG);
 HL_PRIM bool HL_NAME(is_fps_capped)() {
     return dh_is_fps_capped(); 
 }
-DEFINE_PRIM(_VOID, is_fps_capped, _NO_ARG);
+DEFINE_PRIM(_BOOL, is_fps_capped, _NO_ARG);
 
 HL_PRIM bool HL_NAME(is_cursor_shown)() {
     return dh_is_cursor_shown();
