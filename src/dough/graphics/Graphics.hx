@@ -1,5 +1,6 @@
 package dough.graphics;
 
+import haxe.io.Bytes;
 import mathmath.linalg.Matrix4x4;
 import haxe.io.Float32Array;
 import dough.system.Window;
@@ -40,8 +41,16 @@ class Graphics {
         Application.instance.gpu.setFragmentSampler(@:privateAccess texture.backendObj, @:privateAccess sampler.backendObj); 
     }
 
+    static inline function get_bytes():Bytes {
+#if js
+        return Bytes.ofData(mat.getData().buffer);
+#else
+        return mat.getData().bytes;
+#end
+    }
+
     static var mat = new Float32Array(16);
-    public static inline function setVertexUniform(slot:Int, matrix:Matrix4x4) {
+    public static extern inline overload function setVertexUniform(slot:Int, matrix:Matrix4x4) {
         mat[0] = matrix.m0;
         mat[1] = matrix.m1;
         mat[2] = matrix.m2;
@@ -58,8 +67,37 @@ class Graphics {
         mat[13] = matrix.m13;
         mat[14] = matrix.m14;
         mat[15] = matrix.m15;
-        Application.instance.gpu.setVertexUniformData(slot, mat.getData().bytes, 16 * 4);   
+        Application.instance.gpu.setVertexUniformData(slot, get_bytes(), 16 * 4);   
     }
+
+    public static inline function matricesToData(matrices:Array<Matrix4x4>):Bytes {
+        var mat = new Float32Array(16 * matrices.length);
+        for(i in 0...matrices.length) {
+            var matrix = matrices[i];
+            var a = i * 16;
+            mat[a + 0] = matrix.m0;
+            mat[a + 1] = matrix.m1;
+            mat[a + 2] = matrix.m2;
+            mat[a + 3] = matrix.m3;
+            mat[a+  4] = matrix.m4;
+            mat[a + 5] = matrix.m5;
+            mat[a+ 6] = matrix.m6;
+            mat[a + 7] = matrix.m7;
+            mat[a+ 8] = matrix.m8;
+            mat[a+ 9] = matrix.m9;
+            mat[a+ 10] = matrix.m10;
+            mat[a+ 11] = matrix.m11;
+            mat[a+ 12] = matrix.m12;
+            mat[a+ 13] = matrix.m13;
+            mat[a+ 14] = matrix.m14;
+            mat[a+ 15] = matrix.m15;
+        }
+        return mat.getData().bytes;
+    }
+
+    public static extern inline overload function setVertexUniform(slot:Int, bytes:Bytes, size:Int) {
+        Application.instance.gpu.setVertexUniformData(slot, bytes, size);
+    } 
 
     public static inline function setFragmentUniform(slot:Int, data:haxe.io.Bytes) {
     }

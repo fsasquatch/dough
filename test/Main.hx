@@ -59,10 +59,6 @@ function main() {
         sampler = new Sampler();
 
         app.windows[0].resizable = true;
-        app.windows[1] = new Window(800, 600, "Window 2");
-
-        var v  = new Vector3();
-        v.x;
     };
 
     app.onUpdate = () -> {
@@ -75,8 +71,8 @@ function main() {
         var model = Matrix4x4.matrixCompose(new Vector3(10, 10, 0), Quaternion.fromAxisAngle(new Vector3(0, 0, 1), MathMath.degreesToRadians(rotation)), new Vector3(1, 1, 1));
         var view = Matrix4x4.lookAt(new Vector3(0, 0, 2), new Vector3(0, 0, -2), new Vector3(0, 1, 0));
         var projection = Matrix4x4.perspectiveZO(MathMath.degreesToRadians(70), 1280 / 720, 0.0001, 10000);
-        //var projection = Matrix4x4.orthoZO(0, 1280, 720, 0, 0, 1.0);
-    
+        //var projection = Matrix4x4.orthoZO(0, 1280, 720, 0, 0, 1);
+
         var mat = view * model * projection;
 
         Graphics.setClearColor(Color.BLACK);
@@ -89,20 +85,6 @@ function main() {
         Graphics.set(texture, sampler);
         Graphics.draw();
         Graphics.end();
-
-        // always check if the secondary window is running
-        if(app.windows[1].isRunning) {
-            Graphics.setClearColor(Color.RED);
-            Graphics.begin(0, app.windows[1]);
-
-            Graphics.setVertexUniform(0, mat);
-            Graphics.set(pipeline);
-            Graphics.set(vertexBuffer);
-            Graphics.set(indexBuffer);
-            Graphics.set(texture, sampler); 
-            Graphics.draw();
-            Graphics.end();
-        }
     }
 
     app.onDestroy = () -> {

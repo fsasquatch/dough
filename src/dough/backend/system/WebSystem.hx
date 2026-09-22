@@ -1,5 +1,7 @@
 package dough.backend.system;
 
+import js.html.Request;
+import js.html.FileReaderSync;
 import haxe.io.Bytes;
 import js.html.XMLHttpRequest;
 import js.Browser;
@@ -12,8 +14,8 @@ class WebSystem implements SystemApi {
 
     public function new() {}
 
-    public function createWindow(width:Int, height:Int, title:String, flags:Int):Int { 
-        glCanvas = cast Browser.document.getElementById("gl-canvas");
+    public function createWindow(width:Int, height:Int, title:String):Int { 
+        glCanvas = cast Browser.document.getElementById("webgl");
         gl = glCanvas.getContextWebGL2();
 
         glCanvas.width = width;
@@ -29,6 +31,9 @@ class WebSystem implements SystemApi {
 
     public function isWindowRunning(window:Int):Bool {
         return false;
+    }
+
+    public function setWindowRunning(window:Int, running:Bool):Void {
     }
 
     public function getWindowWidth(window:Int):Int {
@@ -99,6 +104,30 @@ class WebSystem implements SystemApi {
         return false;
     }
 
+    public function restoreWindow(window:Int):Bool {
+        return false;
+    }
+
+    public function isWindowResizable(window:Int):Bool {
+        return false;
+    }
+
+    public function setWindowResizable(window:Int, resizable:Bool):Bool {
+        return false;
+    }
+
+    public function wasWindowResized(window:Int):Bool {
+        return false;
+    }
+
+    public function isWindowFocused(window:Int):Bool {
+        return false;
+    }
+
+    public function focusWindow(window:Int):Bool {
+        return false;
+    }
+
     public function pollWindowEvents():Bool {
         return false;
     }
@@ -107,16 +136,32 @@ class WebSystem implements SystemApi {
         // handle stuff
     }
 
+    public function handleInputEvents() {
+    }
+
+    public function setFpsCap(fps:Int) {
+    }
+
+    public function enableFpsCap() {
+    }
+
+    public function disableFpsCap() {
+    }
+
+    public function isFpsCapped():Bool {
+        return false;
+    }
+
     public function showCursor() {
     }
 
     public function hideCursor() {
     }
 
-    public function enableCursor() {
+    public function lockCursor(window:Int) {
     }
 
-    public function disableCursor() {
+    public function unlockCursor(window:Int) {
     }
 
     public function setClipboardText(text:String) {
@@ -135,17 +180,28 @@ class WebSystem implements SystemApi {
     }
     
     public function loadBytes(file:String):haxe.io.Bytes {
-        return null;
+        var bytes:Bytes = null;
+        Browser.window.fetch(file).then(response -> {
+            if(response.ok) {
+                response.arrayBuffer().then(b -> bytes = Bytes.ofData(b));
+            } else if(response.status == 404) {
+                trace("File not found");
+            } else {
+                trace(response.statusText);
+            }
+            
+        }).catchError(e -> trace(Std.string(e)));
+        return bytes;
     }
 
     public function loadText(file:String):String {
         return null;
     }
 
-    public function writeBytes(file:haxe.io.Bytes) {
+    public function writeBytes(file:String, content:haxe.io.Bytes) {
     }
 
-    public function writeText(file:String) {
+    public function writeText(file:String, content:String) {
     }
 
     public function listFileEntries(location:String):Array<String> {
@@ -153,6 +209,10 @@ class WebSystem implements SystemApi {
     }
 
     public function fileExists(file:String):Bool {
+        return false;
+    }
+
+    public function isDirectory(entry:String):Bool {
         return false;
     }
 
@@ -219,14 +279,17 @@ class WebSystem implements SystemApi {
         return -1;
     }
 
-    public function setMousePosition(x:Int, y:Int) {
+    public function setMousePosition(window:Int, x:Int, y:Int) {
     }
 
-    public function getMouseWheelMovement():Float {
+    public function getMouseWheelMovementX():Float {
         return -1;
     }
 
+    public function getMouseWheelMovementY():Float {
+        return -1;
+    }
+    
     public function setMouseCursor(cursor:Int) {
     }
-
 }

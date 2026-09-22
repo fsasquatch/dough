@@ -96,6 +96,22 @@ class Window {
         Application.instance.system.restoreWindow(backendID);
     }
 
+    public function lockCursor() {
+        Application.instance.system.lockCursor(backendID);
+    }
+
+    public function unlockCursor() {
+        Application.instance.system.unlockCursor(backendID);
+    }
+
+    public function showCursor() {
+        Application.instance.system.showCursor();
+    }
+
+    public function hideCursor() {
+        Application.instance.system.hideCursor();
+    }
+
     function get_width() {
         return Application.instance.system.getWindowWidth(backendID);
     }

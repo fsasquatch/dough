@@ -1,5 +1,8 @@
 package dough;
 
+#if js
+import js.Browser;
+#end
 import dough.backend.Audio;
 import dough.backend.Gpu;
 import dough.backend.System;
@@ -69,9 +72,26 @@ class Application {
             }
         }
         #else
+        js_update();
         #end
 
         if(onDestroy != null) onDestroy();
         for(w in windows) w.destroy();
     }
+
+#if js
+    function js_update() {
+        system.handleWindowEvents(0);
+        system.handleInputEvents();
+
+        if(onUpdate != null) onUpdate();
+        gpu.beginRender();
+        if(onDraw != null) onDraw();
+        gpu.endRender();
+
+        Browser.window.requestAnimationFrame((currentTime) -> {
+            js_update();
+        });
+    } 
+#end
 }

@@ -220,7 +220,7 @@ SDL_GPUTexture* dh_load_texture_from_bytes(void* data, int width, int height, in
 
 SDL_GPUTexture* dh_load_texture_from_file(const char* file) {
     int image_width, image_height;
-    stbi_set_flip_vertically_on_load(0);
+    stbi_set_flip_vertically_on_load(1);
     void* image_data = stbi_load(file, &image_width, &image_height, NULL, 4);
     return dh_load_texture_from_bytes(image_data, image_width, image_height, -1);
 }

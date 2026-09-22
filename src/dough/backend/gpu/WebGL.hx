@@ -1,26 +1,28 @@
 package dough.backend.gpu;
 
+import js.html.CanvasElement;
+import js.Browser;
 import js.html.Image;
 import js.html.ImageData;
 import js.lib.Uint8Array;
 import haxe.io.UInt8Array;
 import haxe.io.UInt16Array;
-import Main.vertexBuffer;
 import js.html.webgl.GL2;
 import haxe.io.Bytes;
 import haxe.io.Float32Array;
 import dough.graphics.*;
 import js.html.webgl.WebGL2RenderingContext;
+import dough.backend.system.WebSystem;
 
 class WebGL implements GpuApi {
     var gl:WebGL2RenderingContext;
 
     public function new() {
-        gl = WebSystem.gl;
+        var canvas:CanvasElement = cast Browser.document.getElementById("webgl");
+        gl = canvas.getContextWebGL2();
     }
 
     public function beginRender() {
-        gl.viewport(0, 0, WebSystem.glCanvas.width, WebSystem.glCanvas.height);
     }
 
     public function endRender() {
@@ -28,10 +30,11 @@ class WebGL implements GpuApi {
 
     public function setClearColor(c:Color) {
         gl.clearColor(c.rF, c.gF, c.bF, c.aF);
-        gl.clear(GL2.COLOR_BUFFER_BIT);
     }
 
     public function beginRenderPass(window:Int, id:Int) {
+        gl.viewport(0, 0, WebSystem.glCanvas.width, WebSystem.glCanvas.height);
+        gl.clear(GL2.COLOR_BUFFER_BIT);
     }
 
     public function endRenderPass(id:Int) {
@@ -54,6 +57,7 @@ class WebGL implements GpuApi {
         var ib = gl.createBuffer();
         gl.bindBuffer(GL2.ARRAY_BUFFER, ib);
         gl.bufferData(GL2.ARRAY_BUFFER, data.getData(), GL2.STATIC_DRAW); 
+        return ib;
     }
 
     public function unloadBuffer(buffer:BackendBufferObject) {
@@ -104,54 +108,49 @@ class WebGL implements GpuApi {
     }
 
     public function loadShaderFromBytes(data:haxe.io.Bytes, size:Int, type:Int, info:dough.graphics.ShaderInformation):BackendShader {
-        return Native.loadShaderFromBytes(data, size, type, info.samplers, info.uniformBuffers, info.storageBuffers, info.storageTextures);
+        return null;
     }
 
     public function unloadShader(shader:BackendShader) {
-        Native.unloadShader(shader);
+        return null;
     }
 
     public function loadGraphicsPipeline(v:BackendShader, f:BackendShader, vs:VertexStructure):BackendGraphicsPipeline {
-        Native.setVertexDataSize(vs.size);
-        for(e in vs.elements) {
-            Native.addVertexAttribute(e.e, e.l, e.o);
-        }
-        return Native.loadGraphicsPipeline(v, f);
+        return null;
     }
 
     public function unloadGraphicsPipeline(pipeline:BackendGraphicsPipeline) {
-        Native.unloadGraphicsPipeline(pipeline);
     }
 
     public function setGraphicsPipeline(pipeline:BackendGraphicsPipeline) {
-        Native.setGraphicsPipeline(pipeline);
+        return null;
     }
 
     public function setVertexBuffer(buffer:BackendBufferObject) {
-        Native.setVertexBuffer(buffer);
+        return null;
     }
 
     public function setIndexBuffer(buffer:BackendBufferObject) {
-        Native.setIndexBuffer(buffer);
+        return null;
     }
 
     public function setVertexUniformData(slot:Int, data:haxe.io.Bytes, size:Int) {
-        Native.setVertexUniformData(slot, data, size);
+        return null;
     }
 
     public function setFragmentUniformData(slot:Int, data:haxe.io.Bytes, size:Int) {
-        Native.setFragmentUniformData(slot, data, size);
+        return null;
     }
 
     public function setFragmentSampler(texture:BackendTexture, sampler:BackendSampler) {
-        Native.setFragmentSampler(texture, sampler);
+        return null;
     }
 
     public function drawPrimitives(vertices:Int, instances:Int) {
-        Native.drawPrimitives(vertices, instances);
+        return null;
     }
 
     public function drawIndexedPrimitives(indices:Int, instances:Int) {
-        Native.drawIndexedPrimitives(indices, instances);
+        return null;
     }
 }

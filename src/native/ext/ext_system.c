@@ -19,7 +19,7 @@ DEFINE_PRIM(_BOOL, is_window_running, _I32);
 HL_PRIM void HL_NAME(set_window_running)(int window_id, bool running) {
     dh_set_window_running(window_id, running);
 }
-DEFINE_PRIM(_VOID, set_window_running, _I32 _I32);
+DEFINE_PRIM(_VOID, set_window_running, _I32 _BOOL);
 
 HL_PRIM int HL_NAME(get_window_width)(int window_id) {
     return dh_get_window_width(window_id);
