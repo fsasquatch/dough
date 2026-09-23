@@ -99,7 +99,8 @@ class Graphics {
         Application.instance.gpu.setVertexUniformData(slot, bytes, size);
     } 
 
-    public static inline function setFragmentUniform(slot:Int, data:haxe.io.Bytes) {
+    public static inline function setFragmentUniform(slot:Int, data:haxe.io.Bytes, size:Int) {
+        Application.instance.gpu.setFragmentUniformData(slot, data, size);
     }
 
     public static extern inline overload function draw(vertices:Int, instances:Int = 1) {

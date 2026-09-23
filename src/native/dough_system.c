@@ -50,6 +50,14 @@ int dh_create_window(int width, int height, const char* title, bool debug) {
     if(!dh_app.gpu_device_created) {
         dh_app.gpu_device = SDL_CreateGPUDevice(SDL_GPU_SHADERFORMAT_SPIRV | SDL_GPU_SHADERFORMAT_MSL | SDL_GPU_SHADERFORMAT_DXIL, dh_app.debug, NULL);
         dh_app.gpu_device_created = true;
+        dh_app.depth_texture = SDL_CreateGPUTexture(dh_app.gpu_device, &(SDL_GPUTextureCreateInfo){
+            .layer_count_or_depth=1,
+            .format = SDL_GPU_TEXTUREFORMAT_D24_UNORM,
+            .usage = SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET,
+            .width = window.window_width,
+            .height = window.window_height,
+            .num_levels = 1,
+        });
     }
     if(dh_app.gpu_device == NULL) {
         SDL_Log("Failed to create GPU device: %s", SDL_GetError());

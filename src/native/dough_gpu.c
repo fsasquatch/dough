@@ -1,5 +1,6 @@
 // TODO: Error checks everywhere!
 
+#include "SDL3/SDL_gpu.h"
 #include "SDL3/SDL_stdinc.h"
 #include "SDL3/SDL_timer.h"
 #include "dough_internal.h"
@@ -12,6 +13,7 @@ SDL_FColor clear_color = {0, 0, 0, 1};
 bool copy_pass_active = false;
 Uint64 rendering_time_start;
 Uint64 rendering_time_end;
+SDL_GPUTextureFormat depth_texture_format = SDL_GPU_TEXTUREFORMAT_D24_UNORM;
 
 void dh_begin_render() {
     // temporarily here :)
@@ -56,7 +58,13 @@ void dh_begin_render_pass(int window_id, int render_pass_id) {
         colorTargetInfo.load_op =  SDL_GPU_LOADOP_CLEAR;
         colorTargetInfo.store_op = SDL_GPU_STOREOP_DONT_CARE;
 
-        dh_app.render_passes[render_pass_id] = SDL_BeginGPURenderPass(dh_app.command_buffer, &colorTargetInfo, 1, NULL);
+        SDL_GPUDepthStencilTargetInfo depthTargetInfo = {0};
+        depthTargetInfo.texture = dh_app.depth_texture;
+        depthTargetInfo.load_op = SDL_GPU_LOADOP_CLEAR;
+        depthTargetInfo.clear_depth = 1;
+        depthTargetInfo.store_op = SDL_GPU_STOREOP_STORE;
+
+        dh_app.render_passes[render_pass_id] = SDL_BeginGPURenderPass(dh_app.command_buffer, &colorTargetInfo, 1, &depthTargetInfo);
     }
     dh_app.active_render_pass = render_pass_id;
 }
@@ -359,11 +367,21 @@ SDL_GPUGraphicsPipeline* dh_load_graphics_pipeline(SDL_GPUShader* vertex_shader,
                 {
                     .format = SDL_GetGPUSwapchainTextureFormat(dh_app.gpu_device, dh_app.windows[0].sdl_window)
                 }
-            }
+            },
+            .has_depth_stencil_target = true,
+            .depth_stencil_format= depth_texture_format
         },
-        .primitive_type = SDL_GPU_PRIMITIVETYPE_TRIANGLELIST
+        .primitive_type = SDL_GPU_PRIMITIVETYPE_TRIANGLELIST,
+        .depth_stencil_state = {
+            .enable_depth_test = true,
+            .enable_depth_write = true,
+            .compare_op = SDL_GPU_COMPAREOP_LESS,
+        },
     };
     SDL_GPUGraphicsPipeline* pipeline = SDL_CreateGPUGraphicsPipeline(dh_app.gpu_device, &pipeline_create_info);
+
+    dh_free_array(&dh_app.current_vertex_attribs);
+    dh_init_array(&(dh_app.current_vertex_attribs), sizeof(SDL_GPUVertexAttribute), 3);
 
     return pipeline;
 }

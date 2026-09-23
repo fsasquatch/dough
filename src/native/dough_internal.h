@@ -54,6 +54,7 @@ typedef struct dh_internal_application {
     bool gpu_device_created;
     SDL_GPUDevice* gpu_device;
     SDL_GPUTexture* swapchain_tex;
+    SDL_GPUTexture* depth_texture;
     SDL_GPUCommandBuffer* command_buffer;
     SDL_GPUCopyPass* copy_pass;
     SDL_GPURenderPass* render_passes[DH_MAX_RENDERPASS];
