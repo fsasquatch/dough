@@ -1,7 +1,6 @@
 package dough.graphics;
 
 import haxe.io.Bytes;
-import mathmath.linalg.Matrix4x4;
 import haxe.io.Float32Array;
 import dough.system.Window;
 
@@ -41,6 +40,7 @@ class Graphics {
         Application.instance.gpu.setFragmentSampler(@:privateAccess texture.backendObj, @:privateAccess sampler.backendObj); 
     }
 
+/*
     static inline function get_bytes():Bytes {
 #if js
         return Bytes.ofData(mat.getData().buffer);
@@ -48,7 +48,6 @@ class Graphics {
         return mat.getData().bytes;
 #end
     }
-
     static var mat = new Float32Array(16);
     public static extern inline overload function setVertexUniform(slot:Int, matrix:Matrix4x4) {
         mat[0] = matrix.m0;
@@ -69,7 +68,6 @@ class Graphics {
         mat[15] = matrix.m15;
         Application.instance.gpu.setVertexUniformData(slot, get_bytes(), 16 * 4);   
     }
-
     public static inline function matricesToData(matrices:Array<Matrix4x4>):Bytes {
         var mat = new Float32Array(16 * matrices.length);
         for(i in 0...matrices.length) {
@@ -94,7 +92,7 @@ class Graphics {
         }
         return mat.getData().bytes;
     }
-
+*/
     public static extern inline overload function setVertexUniform(slot:Int, bytes:Bytes, size:Int) {
         Application.instance.gpu.setVertexUniformData(slot, bytes, size);
     } 
