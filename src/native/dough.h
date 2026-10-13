@@ -93,7 +93,10 @@ void dh_end_copy_pass();
 
 SDL_GPUBuffer* dh_load_vertex_buffer(void* data, int size);
 SDL_GPUBuffer* dh_load_index_buffer(void* data, int size);
+int dh_create_storage_buffer(int size);
+void dh_load_storage_buffer(int buffer, void* data, int size);
 void dh_unload_buffer(SDL_GPUBuffer* buffer);
+void dh_unload_storage_buffer(int buffer);
 
 SDL_GPUTexture* dh_load_texture_from_bytes(void* data, int width, int height, int format);
 SDL_GPUTexture* dh_load_texture_from_file(const char* file);
@@ -115,6 +118,7 @@ void dh_set_graphics_pipeline(SDL_GPUGraphicsPipeline* pipeline);
 
 void dh_set_vertex_buffer(SDL_GPUBuffer* vertex_buffer);
 void dh_set_index_buffer(SDL_GPUBuffer* index_buffer);
+void dh_set_storage_buffer(int buffer);
 
 void dh_set_vertex_uniform_data(int slot, void* data, int size); 
 void dh_set_fragment_uniform_data(int slot, void* data, int size);

@@ -40,6 +40,10 @@ class Graphics {
         Application.instance.gpu.setFragmentSampler(@:privateAccess texture.backendObj, @:privateAccess sampler.backendObj); 
     }
 
+    public static extern inline overload function set(buffer:Int) {
+        Application.instance.gpu.setStorageBuffer(buffer); 
+    }
+
 /*
     static inline function get_bytes():Bytes {
 #if js
@@ -101,11 +105,11 @@ class Graphics {
         Application.instance.gpu.setFragmentUniformData(slot, data, size);
     }
 
-    public static extern inline overload function draw(vertices:Int, instances:Int = 1) {
+    public static extern inline overload function draw(vertices:Int, instances:Int) {
         Application.instance.gpu.drawPrimitives(vertices, instances);
     }
 
-    public static extern inline overload function draw(instances:Int = 1) {
+    public static extern inline overload function draw(instances:Int) {
         if(currentIndexBufferLength == -1) {
             trace("No index buffer bound!");
             return;

@@ -87,7 +87,10 @@ extern class Dough {
 
     static function loadVertexBuffer(data:hl.Bytes, size:Int):NativeBuffer;
     static function loadIndexBuffer(data:hl.Bytes, size:Int):NativeBuffer;
+    static function createStorageBuffer(size:Int):Int;
+    static function loadStorageBuffer(buffer:Int, data:hl.Bytes, size:Int):Void;
     static function unloadBuffer(buffer:NativeBuffer):Void; 
+    static function unloadStorageBuffer(buffer:Int):Void;
 
     static function loadTextureFromBytes(data:hl.Bytes, width:Int, height:Int, format:Int):NativeTexture;
     static function loadTextureFromFile(file:String):NativeTexture;
@@ -109,6 +112,7 @@ extern class Dough {
 
     static function setVertexBuffer(buffer:NativeBuffer):Void;
     static function setIndexBuffer(buffer:NativeBuffer):Void;
+    static function setStorageBuffer(buffer:Int):Void;
 
     static function setVertexUniformData(slot:Int, data:hl.Bytes, size:Int):Void;
     static function setFragmentUniformData(slot:Int, data:hl.Bytes, size:Int):Void;

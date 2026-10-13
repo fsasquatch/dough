@@ -46,8 +46,20 @@ class SDLGpu implements GpuApi {
         return Dough.loadIndexBuffer(data.getData().bytes, size);
     }
 
+    public function createStorageBuffer(size:Int):Int {
+        return Dough.createStorageBuffer(size);
+    }
+
+    public function loadStorageBuffer(buffer:Int, data:Float32Array, size:Int) {
+        Dough.loadStorageBuffer(buffer, data.getData().bytes, size);
+    }
+
     public function unloadBuffer(buffer:BackendBufferObject) {
         Dough.unloadBuffer(buffer);
+    }
+
+    public function unloadStorageBuffer(buffer:Int) {
+        Dough.unloadStorageBuffer(buffer);
     }
 
     public function loadTextureFromFile(file:String):BackendTexture {
@@ -104,6 +116,10 @@ class SDLGpu implements GpuApi {
 
     public function setIndexBuffer(buffer:BackendBufferObject) {
         Dough.setIndexBuffer(buffer);
+    }
+
+    public function setStorageBuffer(buffer:Int) {
+        Dough.setStorageBuffer(buffer);
     }
 
     public function setVertexUniformData(slot:Int, data:haxe.io.Bytes, size:Int) {

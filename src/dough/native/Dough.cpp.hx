@@ -114,7 +114,10 @@ extern class Dough {
 
     @:native("dh_load_vertex_buffer") static function loadVertexBuffer(data:VoidPointer, size:Int):NativeBuffer;
     @:native("dh_load_index_buffer") static function loadIndexBuffer(data:VoidPointer, size:Int):NativeBuffer;
+    @:native("dh_create_storage_buffer") static function createStorageBuffer(size:Int):Int;
+    @:native("dh_load_storage_buffer") static function loadStorageBuffer(buffer:Int, data:VoidPointer, size:Int):Void;
     @:native("dh_unload_buffer") static function unloadBuffer(buffer:NativeBuffer):Void; 
+    @:native("dh_unload_storage_buffer") static function unloadStorageBuffer(buffer:Int):Void;
 
     @:native("dh_load_texture_from_bytes") static function loadTextureFromBytes(data:VoidPointer, width:Int, height:Int, format:Int):NativeTexture;
     @:native("dh_load_texture_from_file") static function loadTextureFromFile(file:String):NativeTexture;
@@ -136,6 +139,7 @@ extern class Dough {
 
     @:native("dh_set_vertex_buffer") static function setVertexBuffer(buffer:NativeBuffer):Void;
     @:native("dh_set_index_buffer") static function setIndexBuffer(buffer:NativeBuffer):Void;
+    @:native("dh_set_storage_buffer") static function setStorageBuffer(buffer:Int):Void;
 
     @:native("dh_set_vertex_uniform_data") static function setVertexUniformData(slot:Int, data:VoidPointer, size:Int):Void;
     @:native("dh_set_fragment_uniform_data") static function setFragmentUniformData(slot:Int, data:VoidPointer, size:Int):Void;

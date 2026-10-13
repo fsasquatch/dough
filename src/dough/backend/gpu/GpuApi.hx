@@ -20,7 +20,10 @@ interface GpuApi {
     // loads a vertex buffer to the gpu
     public function loadVertexBuffer(data:haxe.io.Float32Array, size:Int):BackendBufferObject;
     public function loadIndexBuffer(data:haxe.io.UInt16Array, size:Int):BackendBufferObject;
+    public function createStorageBuffer(size:Int):Int;
+    public function loadStorageBuffer(buffer:Int, data:haxe.io.Float32Array, size:Int):Void; 
     public function unloadBuffer(buffer:BackendBufferObject):Void;
+    public function unloadStorageBuffer(buffer:Int):Void;
 
     public function loadTextureFromFile(file:String):BackendTexture;
     // TODO: Enum for all the texture formats
@@ -44,6 +47,7 @@ interface GpuApi {
 
     public function setVertexBuffer(buffer:BackendBufferObject):Void;
     public function setIndexBuffer(buffer:BackendBufferObject):Void;
+    public function setStorageBuffer(buffer:Int):Void;
     
     public function setVertexUniformData(slot:Int, data:haxe.io.Bytes, size:Int):Void;
     public function setFragmentUniformData(slot:Int, data:haxe.io.Bytes, size:Int):Void; 

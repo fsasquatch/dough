@@ -1,4 +1,0 @@
--p ../src 
--m Main
--cpp build 
--lib mathmath

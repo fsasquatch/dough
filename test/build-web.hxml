@@ -1,4 +1,0 @@
--p ../src 
--m Main
--js out.js
--lib mathmath

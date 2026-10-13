@@ -56,10 +56,25 @@ HL_PRIM SDL_GPUBuffer* HL_NAME(load_index_buffer)(void* data, int size) {
 }
 DEFINE_PRIM(_GPU_BUFFER, load_index_buffer, _BYTES _I32);
 
+HL_PRIM int HL_NAME(create_storage_buffer)(int size) {
+    return dh_create_storage_buffer(size);
+}
+DEFINE_PRIM(_I32, create_storage_buffer, _I32);
+
+HL_PRIM void HL_NAME(load_storage_buffer)(int buffer, void* data, int size) {
+    dh_load_storage_buffer(buffer, data, size);
+}
+DEFINE_PRIM(_VOID, load_storage_buffer, _I32 _BYTES _I32);
+
 HL_PRIM void HL_NAME(unload_buffer)(SDL_GPUBuffer* buffer) {
     dh_unload_buffer(buffer);
 }
 DEFINE_PRIM(_VOID, unload_buffer, _GPU_BUFFER);
+
+HL_PRIM void HL_NAME(unload_storage_buffer)(int buffer) {
+    dh_unload_storage_buffer(buffer);
+}
+DEFINE_PRIM(_VOID, unload_storage_buffer, _I32);
 
 HL_PRIM SDL_GPUTexture* HL_NAME(load_texture_from_bytes)(void* data, int width, int height, int format) {
     return dh_load_texture_from_bytes(data, width, height, format);
@@ -135,6 +150,11 @@ HL_PRIM void HL_NAME(set_index_buffer)(SDL_GPUBuffer* buffer) {
     dh_set_index_buffer(buffer);
 }
 DEFINE_PRIM(_VOID, set_index_buffer, _GPU_BUFFER);
+
+HL_PRIM void HL_NAME(set_storage_buffer)(int buffer) {
+    dh_set_storage_buffer(buffer);
+}
+DEFINE_PRIM(_VOID, set_storage_buffer, _I32);
 
 HL_PRIM void HL_NAME(set_vertex_uniform_data)(int slot, void* data, int size) {
     dh_set_vertex_uniform_data(slot, data, size);

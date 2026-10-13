@@ -15,6 +15,10 @@ Uint64 rendering_time_start;
 Uint64 rendering_time_end;
 SDL_GPUTextureFormat depth_texture_format = SDL_GPU_TEXTUREFORMAT_D24_UNORM;
 
+SDL_GPUTransferBuffer* storage_transfer_buffers[32];
+SDL_GPUBuffer* storage_buffers[32];
+int storage_buffer_count = 0;
+
 void dh_begin_render() {
     // temporarily here :)
     dh_app.new_ticks = SDL_GetTicks();
@@ -56,7 +60,7 @@ void dh_begin_render_pass(int window_id, int render_pass_id) {
         colorTargetInfo.clear_color = clear_color; 
         colorTargetInfo.texture = dh_app.swapchain_tex;
         colorTargetInfo.load_op =  SDL_GPU_LOADOP_CLEAR;
-        colorTargetInfo.store_op = SDL_GPU_STOREOP_DONT_CARE;
+        colorTargetInfo.store_op = SDL_GPU_STOREOP_STORE;
 
         SDL_GPUDepthStencilTargetInfo depthTargetInfo = {0};
         depthTargetInfo.texture = dh_app.depth_texture;
@@ -173,8 +177,60 @@ SDL_GPUBuffer* dh_load_index_buffer(void* data, int size) {
     return index_buffer;
 }
 
+int dh_create_storage_buffer(int size) {
+    if(storage_buffer_count > 16) {
+        // TODO: Check if any slot in the array is free and use that
+        SDL_Log("Cannot create storage buffer");
+        return -1;
+    }
+
+    int id = storage_buffer_count;
+    storage_transfer_buffers[id] = SDL_CreateGPUTransferBuffer(dh_app.gpu_device, &(SDL_GPUTransferBufferCreateInfo) {
+            .usage = SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD,
+            .size = size
+    });
+
+    storage_buffers[id] = SDL_CreateGPUBuffer(dh_app.gpu_device, &(SDL_GPUBufferCreateInfo) {.usage = SDL_GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ, .size = size}); 
+
+    storage_buffer_count++;
+    return id;
+}
+
+void dh_load_storage_buffer(int buffer, void* data, int size) {
+    void* transfer_data = SDL_MapGPUTransferBuffer(dh_app.gpu_device, storage_transfer_buffers[buffer], false);
+    SDL_memcpy(transfer_data, data, size);
+    SDL_UnmapGPUTransferBuffer(dh_app.gpu_device, storage_transfer_buffers[buffer]);
+
+    if(copy_pass_active) {
+        SDL_UploadToGPUBuffer(dh_app.copy_pass, &(SDL_GPUTransferBufferLocation) {
+            .transfer_buffer = storage_transfer_buffers[buffer],
+            .offset = 0
+        }, &(SDL_GPUBufferRegion) {
+            .buffer = storage_buffers[buffer],
+            .offset = 0,
+            .size = size
+        }, true);
+    } else {
+        dh_app.copy_pass = SDL_BeginGPUCopyPass(dh_app.command_buffer);
+        SDL_UploadToGPUBuffer(dh_app.copy_pass, &(SDL_GPUTransferBufferLocation) {
+            .transfer_buffer = storage_transfer_buffers[buffer],
+            .offset = 0
+        }, &(SDL_GPUBufferRegion) {
+            .buffer = storage_buffers[buffer],
+            .offset = 0,
+            .size = size
+        }, true);
+        SDL_EndGPUCopyPass(dh_app.copy_pass);
+    }
+} 
+
 void dh_unload_buffer(SDL_GPUBuffer* buffer) {
     SDL_ReleaseGPUBuffer(dh_app.gpu_device, buffer);
+}
+
+void dh_unload_storage_buffer(int buffer) {
+    SDL_ReleaseGPUBuffer(dh_app.gpu_device, storage_buffers[buffer]);
+    SDL_ReleaseGPUTransferBuffer(dh_app.gpu_device, storage_transfer_buffers[buffer]); 
 }
 
 // TODO: Image formats
@@ -394,7 +450,7 @@ void dh_set_graphics_pipeline(SDL_GPUGraphicsPipeline* pipeline) {
     SDL_BindGPUGraphicsPipeline(dh_app.render_passes[dh_app.active_render_pass], pipeline);
 }
 
-// TODO: Handling multiple buffer bindings???
+// TODO: Handling multiple buffer bindings
 // IDK what that means to be honest.
 void dh_set_vertex_buffer(SDL_GPUBuffer* buffer) {
     SDL_BindGPUVertexBuffers(dh_app.render_passes[dh_app.active_render_pass], 0, &(SDL_GPUBufferBinding){.buffer = buffer, .offset = 0}, 1);
@@ -403,6 +459,10 @@ void dh_set_vertex_buffer(SDL_GPUBuffer* buffer) {
 // TODO: Allow multiple formats
 void dh_set_index_buffer(SDL_GPUBuffer* buffer) {
     SDL_BindGPUIndexBuffer(dh_app.render_passes[dh_app.active_render_pass], &(SDL_GPUBufferBinding){.buffer = buffer, .offset = 0}, SDL_GPU_INDEXELEMENTSIZE_16BIT);
+}
+
+void dh_set_storage_buffer(int buffer) {
+    SDL_BindGPUVertexStorageBuffers(dh_app.render_passes[dh_app.active_render_pass], 0,  &storage_buffers[buffer],1);
 }
 
 void dh_set_vertex_uniform_data(int slot, void* data, int size) {

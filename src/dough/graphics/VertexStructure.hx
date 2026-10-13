@@ -4,6 +4,7 @@ enum abstract VSElement(Int) to Int {
     var Float2 = 0;
     var Float3 = 1;
     var Float4 = 2;
+    var Float = 3;
 }
 
 class VertexStructure {
@@ -15,7 +16,8 @@ class VertexStructure {
     var bytesSizes:Map<VSElement, Int> = [
         Float2 => 2 * 4,
         Float3 => 3 * 4,
-        Float4 => 4 * 4
+        Float4 => 4 * 4,
+        Float => 1 * 4
     ];
 
     public function new() {
